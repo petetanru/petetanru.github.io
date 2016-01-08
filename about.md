@@ -4,12 +4,12 @@ title: About
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](http://jekyllrb.com/)
 
-You can find the source code for the Jekyll new theme at:
-{% include icon-github.html username="jglovier" %} /
-[jekyll-new](https://github.com/jglovier/jekyll-new)
+My name is Pete, Peeradej Tanruangporn, and I am a social scientist turned tech-enthusiast. I currently work as a 
+business analyst with MOL, a payment company for digital contents based mostly in Southeast Asia. In this site, I share 
+with you things that awe and excite me! Feel free to drop me a word if you have any thoughts about my posts!
 
-You can find the source code for Jekyll at
-{% include icon-github.html username="jekyll" %} /
-[jekyll](https://github.com/jekyll/jekyll)
+
+
+I use Jekyll to build this site. You can check it out here - 
+{% include icon-github.html username="jekyll" %} 
