@@ -6,14 +6,14 @@ tag: book
 ---
 Hello world! I find that many IT-management-startup books actually say very similar thing just in a different way. There is one book however that stands out, 
 making it my favorite book of this past year -- **["The Hard Thing About Hard Things"][hard-thing]** by [Ben Horowitz][ben]. 
-There were hardly any chapters that I did not find insightful, which I find to be very impressive. 
+I found most of the chapters insightful, which is very impressive by my standard. 
 
-Here's why I enjoy the book: 
+Here's why I enjoyed the book: 
 
 **1. It is the antithesis of "become successful in 1 week" books**
 
-Ben makes it clear that entrepreneurship is not a road filled with roses. The book attempts to recount tough struggles Ben faced as an entrepreneur, to discuss them 
-in a frank manner (20% of the book is actually about him freaking out at the time...), and to evaluate the different course of options one could pursue diligently. 
+Ben makes it clear that entrepreneurship is not a road filled with roses. The book attempts to recount tough struggles Ben faced as an entrepreneur and a CEO, to discuss them 
+in a frank manner (30% of the book is actually about him freaking when shit hits the fan...), and to thoroughly evaluate the different course of options one could pursue. 
 
 **2. It covers many shitty management challenges that other books shy away from**
 
@@ -22,9 +22,9 @@ ie: hiring more experienced staffs, firing executives, managing politics in your
 **An example of this is:**
         
 "Do you demote or fire your executive who has worked very hard but just isn't world class"? 
-And worse, what if it was your friend, in which the process may trigger the feeling of betrayal and embarrassment?
+And worse, what if it was your friend? And how would you deal with the feelings of betrayal and embarrassment that the person may experience?
 
-Ben discusses in detail his take when it comes to navigating through such an issue.
+Ben discusses has obviously thought a lot about this and no doubt been through them.
 
 1. Get ready at the thought that the person may leave the company. 
 2. Do not go into it with as an open discussion. Given the emotional intensity, being on a whim can ruin your relationship
@@ -34,7 +34,7 @@ demoralizing.
 4. Acknowledge the contributions of the person and think through the alternative role (and/or increased pay) you want to offer, with the that person's career development in mind. 
 
 
-**If there is one startup book that I would recommend you to read, it is this one.**
+**If there is one startup management book that I would recommend, it is this one.**
 
 [hard-thing]: http://www.amazon.com/The-Hard-Thing-About-Things/dp/0062273205
 [ben]: http://www.bhorowitz.com/ 
