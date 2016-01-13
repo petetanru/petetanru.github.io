@@ -11,9 +11,9 @@ layout: default
       <li>
         <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
         <h2>
-          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}#disqus_thread" data-disqus-identifier="{{post.url}}">{{ post.title }}</a>
+          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
         </h2>
-
+        <a href="{{post.url}}#disqus_thread"></a>
       </li>
     {% endfor %}
   </ul>
@@ -23,4 +23,3 @@ layout: default
 </div>
 
 
-<script id="dsq-count-scr" src="//petetanru.disqus.com/count.js" async></script>
