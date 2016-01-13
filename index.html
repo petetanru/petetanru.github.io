@@ -15,7 +15,8 @@ layout: default
           <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
         </h2>
 
-        <a href="{{site.url}}{{post.url}}#disqus_thread">Link</a>
+        <a href="{{ post.url | prepend: site.baseurl }}#disqus_thread">Link</a>
+
       </li>
     {% endfor %}
   </ul>
@@ -24,3 +25,4 @@ layout: default
 
 </div>
 
+<script id="dsq-count-scr" src="//petetanru.disqus.com/count.js" async></script>
