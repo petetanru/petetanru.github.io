@@ -12,8 +12,8 @@ layout: default
         <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
         <h2>
           <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-          <a href="{{ post.url }}index.html#disqus_thread" data-disqus-identifier="{{post.url}}"></a>
         </h2>
+        <a class="post-detail" href="{{ post.url | prepend: site.baseurl }}#disqus_thread" data-disqus-identifier="{{post.url}}"></a>
       </li>
     {% endfor %}
   </ul>
