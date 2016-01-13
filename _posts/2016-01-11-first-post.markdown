@@ -2,7 +2,7 @@
 layout: post
 title:  "First Post - Favorite Book of 2015"
 date:   2016-01-11 18:42:11 +0700
-categories: book 
+tag: book 
 ---
 Hello world! I find that many IT-management-startup books actually say very similar thing just in a different way. There is one book however that stands out, 
 making it my favorite book of this past year -- **["The Hard Thing About Hard Things"][hard-thing]** by [Ben Horowitz][ben]. 

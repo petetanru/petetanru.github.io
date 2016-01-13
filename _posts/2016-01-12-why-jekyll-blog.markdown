@@ -2,7 +2,7 @@
 layout: post
 title:  "Why Jekyll for Blogging?"
 date:   2016-01-12 19:52:10 +0700
-categories: jekyll update
+tag: blogging
 ---
 Several factors that I weighed in as I chose my toolkit for blogging: 
 
