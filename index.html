@@ -11,9 +11,9 @@ layout: default
       <li>
         <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
         <h2>
-          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}" data-disqus-identifier="{{post.url}}">{{ post.title }}</a>
         </h2>
-        <a class="post-detail" href="{{ post.url}}#disqus_thread" data-disqus-identifier="{{post.url}}"></a>
+
       </li>
     {% endfor %}
   </ul>
@@ -23,16 +23,4 @@ layout: default
 </div>
 
 
-<script type="text/javascript">
-  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-  var disqus_shortname = 'perfectlyrandom'; // required: replace example with your forum shortname
-  // var disqus_developer = 1; // Comment out when the site is live
-
-  /* * * DON'T EDIT BELOW THIS LINE * * */
-  (function () {
-    var s = document.createElement('script'); s.async = true;
-    s.type = 'text/javascript';
-    s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
-    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-  }());
-</script>
+<script id="dsq-count-scr" src="//petetanru.disqus.com/count.js" async></script>
