@@ -11,7 +11,7 @@ How should I build my blog? Several factors that I thought about include:
 3. **Language** - I prefer Javascript and Python, since I am learning to program in those two languages. 
 4. **Design** - This might sound annoying but I need to like the look of my blog!
 
-Now let's go through them one by one. 
+Now let's go through my different options one by one. 
 
 *Online blogs -  (blogger, tumblr, wordpress.com, etc):* These guys are free and often drop-dead simple. They are meant for bloggers who do not want to get into technical things. My issue with them is about fixed design. Blogger has no serious themes to choose from. WordPress.com has a limited set of free themes that are very difficult to customize. Tumblr feels like Instagram to me and I dislike Instagram. Medium is more interesting and its distribution system made it very appealing. I might use it for another purpose in the future but for now I want a multi-functional personal site with an emphasis on blogging. 
 
