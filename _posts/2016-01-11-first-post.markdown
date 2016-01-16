@@ -4,7 +4,7 @@ title:  "First Post - Favorite Book of 2015"
 date:   2016-01-11 18:42:11 +0700
 tag: book 
 ---
-Hello world! I find that many IT-management-startup books actually say very similar thing just in a different way. There is one book however that stands out, 
+Hello world! In my opinion, many IT-management-startup books actually say very similar things but just in a different way. There is one book however that stands out, 
 making it my favorite book of this past year -- **["The Hard Thing About Hard Things"][hard-thing]** by [Ben Horowitz][ben]. 
 I found most of the chapters insightful, which is very impressive by my standard. 
 
