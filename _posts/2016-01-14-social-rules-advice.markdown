@@ -5,7 +5,7 @@ date:   2016-01-14 21:30:31 +0700
 tag: culture
 ---
 
-The **[Recurse Center][recurse]**, "a free, self-directed, educational retreat for people who want to get better at programming, whether they've been coding for three decades or three months", has a really interesting set of social rules for participants. They're interesting because they focus on the subtle-implicit ways one can be a jerk, and these do not get called out enough in our society. 
+The **[Recurse Center][recurse]**, "a free, self-directed, educational retreat for people who want to get better at programming, whether they've been coding for three decades or three months", has a really interesting set of social rules for participants. They're interesting because they focus on the subtle-implicit ways one can be a jerk, and these do not get called out often in our society. 
 
 ##Social rules
 
