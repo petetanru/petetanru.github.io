@@ -19,7 +19,7 @@ The first rule means you shouldn't act surprised when people say they don't know
 
 A well-actually happens when someone says something that's almost - but not entirely - correct, and you say, "well, actually…" and then give a minor correction. This is especially annoying when the correction has no bearing on the actual conversation. This doesn't mean the Recurse Center isn't about truth-seeking or that we don't care about being precise. Almost all well-actually's in our experience are about grandstanding, not truth-seeking. (Thanks to Miguel de Icaza for originally coining the term "well-actually.")
 
-*Pete* - I agree that the phrase "well, actually" often puts too much emphasis on the point of mistake. Even though I've done this before, thinking that it is in the spirit of making a statement accurate, I've also come to understand that there are better ways to say this. I could discuss first whether I agree with the overall message or not, and then add-on some minor factual correction.*
+*Pete - I agree that the phrase "well, actually" often puts too much emphasis on the point of mistake. Even though I've done this before, thinking that it is in the spirit of making a statement accurate, I've also come to understand that there are better ways to say this. I could discuss first whether I agree with the overall message or not, and then add-on some minor factual correction.*
 
 **No back-seat driving**
 
