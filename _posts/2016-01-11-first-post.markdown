@@ -24,7 +24,7 @@ ie: hiring more experienced staffs, firing executives, managing politics in your
 "Do you demote or fire your executive who has worked very hard but just isn't world class"? 
 And worse, what if it was your friend? And how would you deal with the feelings of betrayal and embarrassment that the person may experience?
 
-Ben discusses has obviously thought a lot about this and no doubt been through them.
+Ben has obviously thought a lot about this and offers his take on it:
 
 1. Get ready at the thought that the person may leave the company. 
 2. Do not go into it with as an open discussion. Given the emotional intensity, being on a whim can ruin your relationship
