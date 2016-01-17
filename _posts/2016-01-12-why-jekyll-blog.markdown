@@ -30,7 +30,7 @@ printHi(Pete)
 #### prints 'Hi Pete' to the STDOUT
 {% endhighlight %}
 
-If you're interested do check out [Jekyll](jekyll). 
+If you're interested do check out [Jekyll][jekyll]. 
 
 [jekyll]: http://jekyllrb.com
 [teera]: http://www.teeramusic.com/
