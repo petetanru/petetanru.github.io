@@ -5,7 +5,7 @@ date:   2016-01-21 21:38:00 +0700
 tag: management innovation
 ---
 
-This page is dedicated to all the buzzwords I frequently encounter and dislike, listed alphabetically. I'll keep on updating the list as I find more words. 
+This page is dedicated to the buzzwords I frequently encounter and dislike, listed alphabetically. I'll keep on updating the list as more words get under my nerve.
 
 **Cloud**
 
