@@ -1,0 +1,29 @@
+---
+layout: post
+title:  "ML driven products and services encountered per day"
+date:   2016-02-27 21:15:02 +0700
+tag: AI
+---
+I am currently going through Andrew Ng's Machine Learning online class through Coursera and it makes me wonder **how many machine learning algorithms we experience per day?**
+
+The question seems a little hard to answer since I do not know how many algorithms underlie what might seem like a task, so I'll take a stab at an **easier version** instead, **'how many machine-learning driven products or services do you encounter per day?'**
+
+Let's work through my day:
+
+08:00 - Get up, check Facebook Newsfeed (1) and email.
+
+09:00 - Commute to work, check articles I've saved on Pocket, many of which were recommended based on what I read (2).
+
+10:00 - Arrive at work, check my email, and plan how I'll spend the day. Often times I end up searching things in the inbox (3), Google search (4), and Facebook search (5).  When I write emails, Grammarly may help correct my typos (6).
+
+12:00 - I might check instagram (7) or look for an App in Google Play for work (8)
+
+13:00 - When I do reearch, I often have to look at foreign sites, with the help of Google Translate (9). Throughout the day, as I browse through the web, I'll most likely be exposed to a bunch of ads based on keyword search and product clustering (10). 
+
+That's about all I can think of at the moment? Feel free to post how many you think you encounter per day! 
+
+
+
+
+
+
