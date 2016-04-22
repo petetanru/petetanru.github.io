@@ -11,6 +11,8 @@ comments: true
 
   <div class="post-content" itemprop="articleBody">
     {{ content }}
+    {% include fblike.html %}
+    <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
     {% include fbcomment.html %}
     <div class="fb-comments" data-href="https://petetanru.github.io/{{page.url}}" data-numposts="5"></div>
   </div>
