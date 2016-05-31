@@ -1,0 +1,5 @@
+<style>
+{% for file in site.data.theme.other_resources.css_files %}
+  @import url("{{ file }}");
+{% endfor %}
+</style>

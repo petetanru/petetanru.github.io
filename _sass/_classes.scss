@@ -1,0 +1,128 @@
+.infobox {
+    background: $major-color;
+    border: 1px solid $border-color;
+}
+
+
+.spoiler {
+    background: $minor-color;
+    color: $minor-color;
+}
+.spoiler::before {
+    content: "spoiler alert!";
+    color: $font-color;
+}
+
+
+.mainmatter {
+    @extend .sep-bottom;
+    background: $background-color;
+}
+.mainmatter::after {
+    display: block;
+    content: "";
+    height: 3em;
+}
+
+
+.container {
+    margin: 0 auto;
+    padding: 0 1em;
+    width: 100%;
+    max-width: $content-width;
+}
+
+
+.target:not(:target) {
+    display: none;
+}
+
+
+.float-left {
+    float: left;
+    margin-right: 1em;
+}
+
+.float-right {
+    float: right;
+    margin-left: 1em;
+}
+
+.clear-float {
+    clear: both;
+    overflow: auto;
+}
+
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+
+.sep-left {
+    border-left: 1px solid $border-color;
+}
+
+.sep-right {
+    border-right: 1px solid $border-color;
+}
+
+.sep-top {
+    border-top: 1px solid $border-color;
+}
+
+.sep-bottom {
+    border-bottom: 1px solid $border-color;
+}
+
+
+.flex {
+    display: -ms-flex;
+    display:     flex;
+}
+
+.flex.column {
+    flex-direction: column;
+}
+
+.flex.align-center {
+    align-items: center;
+}
+
+.flex.mobile-column {
+    @include mobile {
+        flex-direction: column;
+    }
+}
+
+.flex.mobile-column.align-center {
+    @include mobile {
+        text-align: center;
+    }
+}
+
+
+.flexitem.fill {
+    flex: 1;
+}
+
+.flexitem.mobile-first {
+    @include mobile {
+        order: -1;
+    }
+}
+
+
+.MathJax_Display {
+    overflow: auto;
+    padding: 0.75em 0.5em;
+}
+
+
+.highlight.flexitem {
+    overflow-y: hidden;
+}

@@ -1,21 +1,15 @@
 <!DOCTYPE html>
 <html>
-
-  {% include head.html %}
-
-  <body>
-
-    {% include header.html %}
-
-    <div class="page-content">
-      <div class="wrapper">
-        {{ content }}
-
-      </div>
+  <head>
+    {% include preload.html %}
+  </head>
+  <body class="flex column">
+    <div class="mainmatter flexitem fill">
+      {% include header.html %}
+      {{ content }}
     </div>
-
+    {% include footer.html %}
+    {% include script/analytics.html %}
+    {% include style/non_critical.html %}
   </body>
-
-  {% include footer.html %}
-
 </html>

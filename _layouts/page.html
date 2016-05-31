@@ -1,17 +1,20 @@
 ---
 layout: default
-comments: true
 ---
-<article class="post">
 
-  <header class="post-header">
-    <h1 class="post-title">{{ page.title }}</h1>
-  </header>
-
-  <div class="post-content">
+<div class="container">
+  {% if page.title and page.article %}
+  <article class="page">
+    <div class="flex align-center mobile-column">
+      <div class="flexitem fill">
+        <h1>{{ page.title }}</h1>
+      </div>
+    </div>
+    <div class="entry">
+      {{ content }}
+    </div>
+  </article>
+  {% else %}
     {{ content }}
-  </div>
-
-</article>
-
-
+  {% endif %}
+</div>

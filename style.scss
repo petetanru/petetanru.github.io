@@ -1,0 +1,16 @@
+---
+---
+
+@charset "utf-8";
+
+$palette: "{{ site.data.theme.color.palette }}";
+
+@import "variables";
+@import "normalize";
+@import "mixins";
+@import "base";
+@import "classes";
+@import "header";
+@import "article";
+@import "footer";
+@import "{{ site.data.theme.color.highlight | default: 'custom' | prepend: 'highlight/' }}";
