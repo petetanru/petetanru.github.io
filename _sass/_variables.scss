@@ -44,7 +44,7 @@ $mobile-width: 640px;
 }
 
 @if ($palette == "mango") {
-    $major-color: lighten(gold, 10%);
+    $major-color: lighten(#fed513, 30%);
     $minor-color: lighten(lightgray, 10%);
     $border-color: gainsboro;
     $background-color: white;
