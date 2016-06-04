@@ -1,3 +1,11 @@
+
+Pete's Blog
+===========
+
+My personal and blog. The link to it is here: [Pete's blog][]
+
+Special credit to my friend Neizod for creating the site's theme that I am working off from. It's called 'Polar'. 
+
 Polar Theme
 ===========
 
@@ -13,3 +21,4 @@ This theme is implemented for Jekyll and GitHub Pages. It's mainly inspire by:
 [Skeleton]: //getskeleton.com/
 [Jekyll Now]: //github.com/barryclark/jekyll-now
 [Amplify]: //github.com/ageitgey/amplify
+[Pete's blog]: //petetanru.github.io
