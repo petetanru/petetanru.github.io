@@ -1,7 +1,7 @@
 #TODO set each item to null then define your css color in _sass/ dir.
 #     preset: palette = { north-pole, aurora }, highlight = { github, monokai }
 color:
-  palette:   mango
+  palette:   north-pole
   highlight: github
 
 

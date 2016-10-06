@@ -4,7 +4,7 @@
 
 title:       Pete's Messy Room          #TODO title of this site
 description: Beta-stage blog, with a slight tropical twist in theme            #TODO short description
-logo:        "/images/PMK_Mango_ed.png"         #TODO logo, recommended 256x256
+logo:        "/images/twister_royalblue.png"         #TODO logo, recommended 256x256
 cover:       "/images/cover.png"        #TODO cover, recommended 1200x630
 
 baseurl:                                #TODO leaves blank if already root
