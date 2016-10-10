@@ -20,6 +20,8 @@ As machines take on a bigger analytical role, especially anything that can be cl
 ## Advanced tools
 I don't think the days of widely accessible machine learning tools is far off, and just as excel skill and data science is valued today, the ability to use advanced analytical tools will be even more pronounced in the future. 
 
+## Conclusion
+
 So what does this all mean? It means a modern 'smart' person is someone who is eager to search online questions rather than postpone, someone who strategize learning (ie: Zuckerberg made a forum for Harvard students to share notes and interpretations of text because he wasn't studying at all), someone who is good at thinking outside the box, and someone who really knows how to use their tools.  
 
 
