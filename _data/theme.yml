@@ -30,7 +30,7 @@ text:
   mark:
     latest_post:  Latest Post
     feature_post: Feature Post
-    feature_proj: Feature Project
+    feature_proj: Latest Project
   paginate:
     left_symbol:  «
     right_symbol: »

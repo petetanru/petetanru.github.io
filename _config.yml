@@ -3,7 +3,7 @@
 # you should change this to suit your own preference.
 
 title:       Pete's Messy Room          #TODO title of this site
-description: Beta-stage blog, with a slight tropical twist in theme            #TODO short description
+description: Beta-stage blog.            #TODO short description
 logo:        "/images/twister_royalblue.png"         #TODO logo, recommended 256x256
 cover:       "/images/cover.png"        #TODO cover, recommended 1200x630
 
