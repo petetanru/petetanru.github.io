@@ -2,9 +2,9 @@
 Pete's Blog
 ===========
 
-My personal and blog. The link to it is here: [Pete's blog][]
+My beta-stage personal blog. The link to it is here: [Pete's blog][]
 
-Special credit to my friend Neizod for creating the site's theme that I am working off from. It's called 'Polar'. 
+Special credit to my friend Neizod for creating the site's Jekyll theme, "Polar". 
 
 Polar Theme
 ===========
