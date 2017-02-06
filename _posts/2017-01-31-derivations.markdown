@@ -13,9 +13,11 @@ $$ f(x_j) = softmax(x_j) = \frac{ \exp^{x_j} }{ \sum_{k}^{n} \exp^{x_k} } $$
 
 Using quotient rule where:
 
-For $ f(x) = \frac{g(x)}{h(x)}$    The deriviative  $f'(x) = \frac{ g'(x)h(x) - g(x)h'(x) }{ h(x)^2 } $
+$$ f(x) = \frac{g(x)}{h(x)} $$ 
 
+$$  f'(x) = \frac{ g'(x)h(x) - g(x)h'(x) }{ h(x)^2 } $$
 
+​	
 
 When i = j:
 
@@ -54,9 +56,9 @@ To summarize:
 
 Given $p_j = \frac{e^x_j}{\sum_k e^x_k} $
 
-$\frac{\partial p_j}{\partial \theta_i} = p_i (1 - p_i),$  $ i = j$
+$$\frac{\partial p_j}{\partial \theta_i} = p_i (1 - p_i), i =j$$  
 
-$\frac{\partial p_j}{\partial \theta_i} = -p_i p_j, $  $i \neq j$
+$$\frac{\partial p_j}{\partial \theta_i} = -p_i p_j, i \neq j$$
 
 
 
@@ -86,7 +88,9 @@ When $ i \neq j $ :
 
 $$ -\sum y_j * \frac{1}{\hat{y}} * \frac{ \partial\hat{y}}{\partial \theta_i} =  -\sum y_{j \neq i} * \frac{1}{\hat{y}_i} * (- \hat{y}_i \hat{y}_j)$$
 
-$= 0..? $ since $y_{i \neq j}$ will always be zero, given it's a one hot vector
+$= 0..? $ s
+
+ince $y_{i \neq j}$ will always be zero, given it's a one hot vector
 
 
 
@@ -94,7 +98,9 @@ The solution should be
 
 $$ \hat{y} - y $$
 
-or equivalently: 	$\hat{y}_i - 1,$  	$i = j $
+or equivalently: 	
+
+$\hat{y}_i - 1,$  	$i = j $
 
 ​				$\hat{y}_i,$  		$i \neq j$
 
