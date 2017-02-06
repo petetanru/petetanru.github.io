@@ -2,8 +2,8 @@
 title: About Me
 ---
 
-My name is Pete, Peeradej Tanruangporn, and I consider myself a social scientist turned tech-enthusiast. I currently work as a 
-business analyst with MOL Global, an epayment company based largely in Southeast Asia. In my free time, I read and think a lot about new business ideas. Recently, I have been a little obsessed about implementing my own machine learning pet project.. 
+My name is Pete, Peeradej Tanruangporn, and I consider myself a social scientist turned tech-enthusiast. I most recently worked as a 
+strategy and business analyst with MOL Global, an epayment company based Southeast Asia that provides services mostly for developing countries. The advent of Alpha Go shook my world and made me realize I there was nothing else that I wanted to contribute more to than AI. At the moment I spend most of my free time on AI-related MOOCs and will hopefully be soon showcasing some ML projects here! 
 
 Feel free to drop me comments and feedbacks!
 
