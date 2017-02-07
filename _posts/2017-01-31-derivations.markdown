@@ -64,43 +64,51 @@ $$\frac{\partial p_j}{\partial \theta_i} = -p_i p_j, i \neq j$$
 
 # Deriving Cross Entropy w.r.t Softmax's input
 
-$CE = - \sum{y}\log(\hat{y})$  where  $\hat{y} = softmax(\theta) $  and  $y$ is a one-hot vector
+$CE = - \sum_j{y}\log(\hat{y})$  where  $\hat{y} = softmax(\theta) $  and  $y$ is a one-hot vector
 
 With chain rule: 
 
 $$f'(x) = \frac{\partial f(x)}{\partial g(x)} * \frac{\partial g(x)}{\partial h(x)}$$
 
-$$ \frac{\partial CE}{\partial\theta_i} = -\sum \frac{ \partial y_j \log(\hat{y})}{\partial \theta_i}$$
+$$ \frac{\partial CE}{\partial\theta_i} = -\sum \frac{ \partial y \log(\hat{y})}{\partial \theta_i}$$
 
-$$= -\sum y_j * \frac{1}{\hat{y}}\frac{ \partial\hat{y}}{\partial \theta_i}$$
+$$= -\sum_j y_j * \frac{1}{\hat{y}_j}\frac{ \partial\hat{y}_j}{\partial \theta_i}$$
 
 
 
 When $i = j$ 
 
-$$-\sum y_j * \frac{1}{\hat{y}} * \frac{ \partial\hat{y}}{\partial \theta_i} = - y_j * \frac{1}{\hat{y}_j} *  \hat{y}_j (1 - \hat{y}_j)$$
+$$-\sum_j y_j * \frac{1}{\hat{y}_j} * \frac{ \partial\hat{y_j}}{\partial \theta_i} = - y_i * \frac{1}{\hat{y}_i} *  \hat{y}_i (1 - \hat{y}_i)$$
 
-$$ = \hat{y}_j - y_j$$
+$$ = -y_i (1-\hat{y}_i)$$
 
-$$ = \hat{y}_j - 1$$
+
 
 When $ i \neq j $ : 
 
-$$ -\sum y_j * \frac{1}{\hat{y}} * \frac{ \partial\hat{y}}{\partial \theta_i} =  -\sum y_{j \neq i} * \frac{1}{\hat{y}_i} * (- \hat{y}_i \hat{y}_j)$$
+$$ -\sum y_j * \frac{1}{\hat{y}_j} * \frac{ \partial\hat{y}}{\partial \theta_i} =  -\sum y_{i \neq j} * \frac{1}{\hat{y}_j} * (- \hat{y}_i \hat{y}_j) $$
 
-$= 0..? $ s
-
-ince $y_{i \neq j}$ will always be zero, given it's a one hot vector
+$$= \sum_{i \neq j}  y_i\hat{y}_i$$
 
 
 
-The solution should be
+Combining the two
 
-$$ \hat{y} - y $$
+$$-\sum y_j * \frac{1}{\hat{y}_j}\frac{ \partial\hat{y}}{\partial \theta_i} = -y_i (1-\hat{y}_i) +  \sum_{i \neq j} y_i \hat{y}_i $$
+
+$$= y_i \hat{y}_i - y_i +  \sum_{i \neq j} y_i\hat{y}_i $$
+
+$$ = \hat{y}_i \sum_j y_i - y_i $$
+
+We know that sum of $y_i$ is 1, so the solution is:
+
+$$ = \hat{y}_i - y_i$$
 
 or equivalently: 	
 
 $\hat{y}_i - 1,$  	$i = j $
 
-​				$\hat{y}_i,$  		$i \neq j$
+$\hat{y}_i,$  		$i \neq j$
+
+
 
