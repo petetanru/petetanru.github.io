@@ -25,6 +25,7 @@ html {
 body {
     background: $major-color;
     color: $font-color;
+    overflow-x: hidden;
 }
 
 
@@ -86,13 +87,6 @@ td {
 }
 
 
-blockquote {
-    margin: 0;
-    padding: 0 1.5em;
-    border-left: 0.25em solid $major-color;
-}
-
-
 code {
     @extend .highlight;
     font-family: $font-mono;
@@ -126,8 +120,4 @@ img {
 
 iframe {
     max-width: 100%;
-}
-
-article h1 {
-  font-size: 28px;
 }

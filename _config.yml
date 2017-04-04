@@ -1,54 +1,58 @@
-# Identity Setting
-# ================
-# you should change this to suit your own preference.
+# User Config
+# ===========
+# fill/change these fields to match your own.
 
-title:       Pete's Messy Room          #TODO title of this site
-description: Beta-stage blog.            #TODO short description
-logo:        "/images/twister_royalblue.png"         #TODO logo, recommended 256x256
-cover:       "/images/cover.png"        #TODO cover, recommended 1200x630
+# Identity
+# --------
 
-baseurl:                                #TODO leaves blank if already root
-url:     "https://petetanru.github.io"     #TODO canonical url w/ protocol
+title:       pete's messy room
+description: thoughts and notes
 
-owner:  Pete Peeradej Tanruangporn      #TODO site's owner, individual or org
-rights: All Right Reserved              #TODO rights statement
+logo:  "/images/twister_royalblue.png"
+cover: "/assets/img/cover.png"
+
+baseurl: ""
+url:     "https://petetanru.github.io"
+
+owner:  Pete Peeradej Tanruangporn
+rights: All Right Reserved
+
 
 # Social & Sharing
 # ----------------
 
 google:
-  analytics:                            #TODO e.g. U-8152342-4
-  verification:                         #TODO verification string in meta tag
+  analytics:
+  verification:
 
 facebook:
-  username: pete.tanruangporn                            #TODO site's facebook
-  app_id:                               #TODO collect og sharing data
+  username: pete.tanruangporn
+  app_id:
 
 twitter:
-  username:                             #TODO site's twitter
-  share_large_image: true               #TODO use large img in twitter card
+  username:
+  large_img: sometimes
 
 disqus:
-  username: petetanru                            #TODO if polar.disqus.com, then polar
+  username: petetanru
 
 
-# Content Setting
-# ===============
-# you may change this to suit your own preference.
+# Content Format
+# --------------
 
-timezone: Asia/Bangkok                  #TODO post time offset
-paginate: 10                             #TODO nos of excerpt post per page
-mathjax:  true                          #TODO if true, write $ with \\$
+timezone: Asia/Bangkok
+paginate: 10
+mathjax:  true
 
 
-# Engine Setting
-# ==============
+# Engine Config
+# =============
 # you shouldn't change this unless you really know what you're doing.
-
-paginate_path: "/posts/page:num"
 
 collections:
   projects:
+    output: true
+  docs:
     output: true
 
 defaults:
@@ -57,7 +61,6 @@ defaults:
       type: pages
     values:
       layout: page
-      article: true
   - scope:
       path: ""
       type: posts
@@ -68,6 +71,13 @@ defaults:
       type: projects
     values:
       layout: project
+  - scope:
+      path: ""
+      type: docs
+    values:
+      layout: doc
+
+paginate_path: "/posts/page:num"
 
 sass:
   sass_dir: "_sass/"
@@ -80,3 +90,7 @@ exclude:
 gems:
   - jekyll-sitemap
   - jekyll-paginate
+
+empty_array: []
+
+

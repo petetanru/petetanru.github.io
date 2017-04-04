@@ -1,10 +1,24 @@
 ---
-title: About Me
+layout: empty/about
+title: Pete Peeradej Tanruangporn
 ---
 
-My name is Pete, Peeradej Tanruangporn, and I consider myself a social scientist turned tech-enthusiast. I most recently worked as a 
-strategy and business analyst with MOL Global, an epayment company based Southeast Asia that provides services mostly for developing countries. The advent of Alpha Go shook my world and made me realize I there was nothing else that I wanted to contribute more to than AI. At the moment I spend most of my free time on AI-related MOOCs and will hopefully be soon showcasing some ML projects here! 
+As of late 2016, I have left my job to pursue the field of Artificial Intelligence full-time. Previously, I worked for an e-payment company that provides services for developing countries called MOL Global. My roles included strategy and business analysis, and occasionally project management.
 
-Feel free to drop me comments and feedbacks!
 
-This site is powered by Jekyll, and my friend's theme called "Polar"! You can check out the link to it in the footer. 
+In my previous life I did social science and policy research. I have an Mphil in Politics from Cambridge U., UK, and a BA in Economics and International Development from Trent U., Canada. I have worked for academia, international organizations, and a think tank.
+
+
+Fun Facts
+----
+- I produced a "boys love" TV series called "Love Sick" with my friends while I was a researcher. It became an [Asian phenomenon].
+- I have consistently dedicated 2 weeks per year to serious traveling and have lived in 4 continents during my educational years.
+
+Links
+----
+- [LinkedIn]
+- [GitHub]
+
+[Asian phenomenon]:http://www.newyorker.com/culture/culture-desk/boys-in-love
+[LinkedIn]:https://www.linkedin.com/in/peeradej-pete-tanruangporn-0a977170/
+[GitHub]:https://github.com/petetanru

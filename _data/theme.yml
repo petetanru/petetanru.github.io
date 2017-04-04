@@ -10,27 +10,36 @@ color:
 date:
   short:      "%B %e, %Y"
   long:       "%A, %B %e, %Y, %I:%M %p"
-  allow_long: true
+  allow_long: sometimes
 
 
 #TODO you may change navigation behavior here.
 navigation:
-  older_left: false
+  menu:
+    - name: Posts
+      path: "/posts"
+    - name: Projects
+      path: "/projects"
+    - name: About
+      path: "/about"
+  paginate:
+    older: right
 
 
 #TODO you may customize padding text here.
 text:
   meta:
     title_sep:    "|"
-  date:
-    post:         Written on
-    proj:         Worked on
+  menu:
+    item_sep:     "⋅"
+  unconfig:
+    title:        untitled
+    description:  unconfigured theme
+  empty:
+    announcement: Announcement
   excerpt:
     read_more:    Read More
-  mark:
-    latest_post:  Latest Post
-    feature_post: Feature Post
-    feature_proj: Latest Project
+    item_sep:     "/"
   paginate:
     left_symbol:  «
     right_symbol: »
@@ -38,14 +47,29 @@ text:
     of_page:      " of "
     prev_page:    Prev
     next_page:    Next
+  post:
+    origin:       "Originally posted on: "
   project:
     demo:         Live Demo!
     source:       Source Code
 
 
-#TODO you may include other resources here.
-other_resources:
-  css_files:
-    - "//fonts.googleapis.com/css?family=Lora"
-    - "//fonts.googleapis.com/css?family=Raleway:300"
-    - "//fonts.googleapis.com/css?family=Ubuntu+Mono"
+#TODO you may change/add more font here.
+font:
+  head:
+    families:
+      - name: Raleway
+        weight: 300
+    default: sans-serif
+  body:
+    families:
+      - name: Lora
+    default: serif
+  mono:
+    families:
+      - name: Ubuntu Mono
+    default: monospace
+    size: 1.0em
+    line-height: 1.2
+  languages:
+    - latin-ext

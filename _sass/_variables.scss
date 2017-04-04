@@ -9,15 +9,6 @@ $font-color: black;
 $link-color: navy;
 
 
-//TODO if you like to use other fonts, add more font here.
-//     and don't forget to link font file in _includes/non_critical_css.html
-$font-head: "Raleway", sans-serif;
-$font-body: "Lora", serif;
-$font-mono: "Ubuntu Mono", monospace;
-$font-mono-size: 1.0em;
-$font-mono-line-height: 1.0;
-
-
 // this is preset size, you should not change this.
 $content-width: 720px;
 $mobile-width: 640px;
@@ -41,14 +32,4 @@ $mobile-width: 640px;
 
     $font-color: lighten(green, 23%);
     $link-color: darken(red, 8%);
-}
-
-@if ($palette == "mango") {
-    $major-color: lighten(#fed513, 30%);
-    $minor-color: lighten(lightgray, 10%);
-    $border-color: gainsboro;
-    $background-color: white;
-
-    $font-color: lighten(black, 15%);
-    $link-color: darken(orange, 20%);
 }
