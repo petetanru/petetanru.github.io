@@ -11,7 +11,7 @@ In my previous life I did social science and policy research. I have an Mphil in
 
 Fun Facts
 ----
-- I produced a "boys love" TV series called "Love Sick" with my friends while I was a researcher. It became an [Asian phenomenon].
+- I invested and produced a "boys love" TV series called "Love Sick" with my friends while I was a researcher. It became an [Asian phenomenon].
 - I have consistently dedicated 2 weeks per year to serious traveling and have lived in 4 continents during my educational years.
 
 Links
