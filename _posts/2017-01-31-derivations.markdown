@@ -1,11 +1,11 @@
 ---
 layout: post
-title:  "Derivations from ML course"
+title:  "Basic NN derivatives"
 date:   2017-01-31 16:32:00 +0700
 tag: math, AI
 ---
 
-I'm current going through CS224d, Natural Language Processing, and the assignment involves several derivations. I want to log some of my work here especially because many solutions over the internet gloss over basic steps and are not as friendly for newcomers. This will hopefully also help me when I forget hwo to do them.
+I want to log some of my the basic derivatives for neural networks here especially because many solutions over the internet gloss over basic steps and are not as friendly for newcomers. 
 
 # Deriving Softmax w.r.t. to its input
 
