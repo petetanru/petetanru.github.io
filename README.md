@@ -1,7 +1,7 @@
 Pete's Blog
 ===========
 
-My beta-stage personal blog. The link to it is here: [Pete's blog][]
+My beta-stage personal blog. The link to it is here: [Pete's blog]
 
 Special credit to my friend Neizod for creating the site's Jekyll theme, "Polar". The following is the original readme text. 
 
@@ -50,3 +50,4 @@ Since my intention is to keep this project as small as possible, only 2 branches
 [Tufte CSS]: //edwardtufte.github.io/tufte-css/
 [Jekyll Now]: //github.com/barryclark/jekyll-now
 [Amplify]: //github.com/ageitgey/amplify
+[Pete's blog]: https://petetanru.github.io/ 
