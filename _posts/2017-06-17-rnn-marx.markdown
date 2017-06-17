@@ -1,0 +1,514 @@
+---
+layout: post
+title:  "The wisdom of Marx with char-2-char"
+date:   2017-06-17 15:43:00 +0700
+tag: AI, marx, rnn, deep-learning
+---
+
+
+#### Quick recurrent neural network text generation
+
+Marx had many great and poor insights about society. I'm keen to see if the simple char-2-char recurrent neural network I learned in [Udacity's AI Nanodegreee](https://www.udacity.com/ai) can reproduce either of the above by reading Das Kapital Vol.1. Let's go!
+
+
+```python
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+```
+
+I acquired the MS word version of Das Kapital from here: https://www.marxists.org/archive/marx/works/1867-c1/ and turned it into a text format I could load.
+
+
+```python
+text = open('capital-vol1.txt', 'r', encoding='latin-1').read()
+```
+
+Let's see snippets of it to get som eidea of what we're dealing with.
+
+
+```python
+text[:1000]
+```
+
+
+
+
+    'Chapter 1: Commodities\nSection 1: The Two Factors of a Commodity:\nUse-Value and Value\n(The Substance of Value and the Magnitude of Value)\nThe wealth of those societies in which the capitalist mode of '
+
+
+
+Hm, there are a lot of non-english characters in there. Let's see them all listed in one place
+
+
+```python
+chars = sorted(set(text))
+print('corpus has ' + str(len(text)) + ' letters altogether')
+print ('corpus has ' + str(len(chars)) + ' unique characters:', chars)
+```
+
+    corpus has 1468303 letters altogether
+    corpus has 108 unique characters: ['\n', ' ', '!', '"', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '=', '?', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', ']', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '}', '\x91', '\x92', '\x93', '\x94', '\x96', '\xa0', '£', '°', '¼', '½', '¾', '×', 'à', 'â', 'æ', 'è', 'é', 'ê', 'î', 'ï', 'ô', 'û', 'ü']
+
+
+Let's remove the numbers, the capitals, and the non-english characters to make reduce the range of our output.
+
+
+```python
+def clean(text):
+    return text.replace('#','').\
+    replace('0','').\
+    replace('1','').\
+    replace('2','').\
+    replace('3','').\
+    replace('4','').\
+    replace('5','').\
+    replace('6','').\
+    replace('7','').\
+    replace('8','').\
+    replace('9','').\
+    replace('$','').\
+    replace('#', '').\
+    replace('$','').\
+    replace('%','').\
+    replace('&',' and ').\
+    replace('*','').\
+    replace('@','').\
+    replace('[','').\
+    replace(']','').\
+    replace('\\','').\
+    replace('^','').\
+    replace('`','').\
+    replace('_',' ').\
+    replace('{','').\
+    replace('}','').\
+    replace('|','').\
+    replace('=','').\
+    replace('!','').\
+    replace('/','').\
+    replace('-','').\
+    replace(')','').\
+    replace('(','').\
+    replace('+','').\
+    replace('\x08','').\
+    replace('\n',' ').\
+    replace('\x80','').\
+    replace('\x92','').\
+    replace('\x93','').\
+    replace('\x85','').\
+    replace('\x94','').\
+    replace('\x96','').\
+    replace('\x97','').\
+    replace('\x9c','').\
+    replace('\xa0','').\
+    replace('\x9d','').\
+    replace('\x91','').\
+    replace('\x9d','').\
+    replace('ï','').\
+    replace('ô','').\
+    replace('ï','').\
+    replace('û','').\
+    replace('ü','').\
+    replace('ê','').\
+    replace('é','').\
+    replace('æ','').\
+    replace('à','').\
+    replace('¾','').\
+    replace('½','').\
+    replace('¼','').\
+    replace('°','').\
+    replace('£','').\
+    replace('©','').\
+    replace('²','').\
+    replace('Â','').\
+    replace('È','').\
+    replace('â','').\
+    replace('è','').\
+    replace('ù','').\
+    replace('ý','').\
+    replace('>','').\
+    replace('î','').\
+    replace('~','')
+
+text = text.lower()
+text = clean(text)
+
+chars = sorted(set(text))
+print('corpus has ' + str(len(text)) + ' letters altogether')
+print ('corpus has ' + str(len(chars)) + ' unique characters:', chars)
+```
+
+    corpus has 1444272 letters altogether
+    corpus has 35 unique characters: [' ', '"', "'", ',', '.', ':', ';', '?', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '×']
+
+
+### Creating input and output data for training
+Now we need to create our training data. Our input (X) should be a string of text, say 100 characters long (we will call that the window size), and the output (y) should be the next character following it. We can decide how many samples we want by determining step size. If our step size is 1, we are essentially creating an output for every single letter in the text. If our step size is 20, we skip 20 letters ahead between each output, and our sample size would be (total letters)/(step size).
+
+
+```python
+# Source for util codes: Udacity's AI Nanodegree
+chars_to_indices = dict((c, i) for i, c in enumerate(chars))  # map each unique character to unique integer
+indices_to_chars = dict((i, c) for i, c in enumerate(chars))  # map each unique integer back to unique character
+```
+
+
+```python
+def window_transform_text(text, window_size, step_size):
+    inputs = []
+    outputs = []
+
+    # inputs - iterates over text, each step being step_size, to create a list of window of text
+    for i in range(0, len(text) - window_size, step_size):
+        window = text[i:window_size+i]
+        inputs.append(window)
+
+    # output - iterates over text, each step being step_size, to create a list of the character following the window of text
+    outputs = [i for i in text[window_size::step_size]]
+
+    return inputs,outputs
+```
+
+
+```python
+def encode_io_pairs(text,window_size,step_size):
+    chars = sorted(list(set(text)))
+    num_chars = len(chars)
+
+    # cut up text into character input/output pairs
+    inputs, outputs = window_transform_text(text,window_size,step_size)
+
+    # create empty vessels for one-hot encoded input/output
+    X = np.zeros((len(inputs), window_size, num_chars), dtype=np.bool)
+    y = np.zeros((len(inputs), num_chars), dtype=np.bool)
+
+    # loop over inputs/outputs and tranform and store in X/y
+    for i, sentence in enumerate(inputs):
+        for t, char in enumerate(sentence):
+            X[i, t, chars_to_indices[char]] = 1
+        y[i, chars_to_indices[outputs[i]]] = 1
+
+    return X, y
+```
+
+
+```python
+# Creation time
+window_size = 100
+step_size = 10    
+X, y = encode_io_pairs(text,window_size,step_size)
+```
+
+### Training the RNN model for text generation
+
+
+```python
+from keras.models import Sequential
+from keras.layers import Dense, Activation, LSTM, Dropout
+from keras.optimizers import RMSprop, Adam
+from keras.utils.data_utils import get_file
+from keras.callbacks import ModelCheckpoint  
+import keras
+import random
+
+model = Sequential()
+model.add(LSTM(512, input_shape=(window_size, len(chars)), return_sequences=True))
+model.add(LSTM(512))
+model.add(Dense(len(chars)))
+model.add(Activation('softmax'))
+
+model.summary()
+
+# compile model --> make sure initialized optimizer and callbacks - as defined above - are used
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+```
+
+    _________________________________________________________________
+    Layer (type)                 Output Shape              Param #   
+    =================================================================
+    lstm_12 (LSTM)               (None, 100, 512)          1122304   
+    _________________________________________________________________
+    lstm_13 (LSTM)               (None, 512)               2099200   
+    _________________________________________________________________
+    dense_9 (Dense)              (None, 35)                17955     
+    _________________________________________________________________
+    activation_9 (Activation)    (None, 35)                0         
+    =================================================================
+    Total params: 3,239,459
+    Trainable params: 3,239,459
+    Non-trainable params: 0
+    _________________________________________________________________
+
+
+
+```python
+# save weights
+checkpointer = ModelCheckpoint(filepath='best_RNN_large_textdata_weights.hdf5', verbose=1, save_best_only=True)
+hist = model.fit(X, y, batch_size=512, nb_epoch=50, verbose = 2, validation_split=0.2, callbacks=[checkpointer])
+model.save_weights('last_RNN_large_textdata_weights.hdf5')
+```
+
+    C:\Users\pete_tanru\AppData\Local\conda\conda\envs\tensorflow\lib\site-packages\keras\models.py:851: UserWarning: The `nb_epoch` argument in `fit` has been renamed `epochs`.
+      warnings.warn('The `nb_epoch` argument in `fit` '
+
+
+    Train on 115534 samples, validate on 28884 samples
+    Epoch 1/50
+    Epoch 00000: val_loss improved from inf to 2.32095, saving model to best_RNN_large_textdata_weights.hdf5
+    104s - loss: 2.7569 - acc: 0.2175 - val_loss: 2.3210 - val_acc: 0.3341
+    Epoch 2/50
+    Epoch 00001: val_loss improved from 2.32095 to 1.98707, saving model to best_RNN_large_textdata_weights.hdf5
+    102s - loss: 2.0312 - acc: 0.4107 - val_loss: 1.9871 - val_acc: 0.4240
+    Epoch 3/50
+    Epoch 00002: val_loss improved from 1.98707 to 1.80008, saving model to best_RNN_large_textdata_weights.hdf5
+    102s - loss: 1.7172 - acc: 0.5006 - val_loss: 1.8001 - val_acc: 0.4699
+    Epoch 4/50
+    Epoch 00003: val_loss improved from 1.80008 to 1.68999, saving model to best_RNN_large_textdata_weights.hdf5
+    102s - loss: 1.5226 - acc: 0.5524 - val_loss: 1.6900 - val_acc: 0.5056
+    Epoch 5/50
+    Epoch 00004: val_loss improved from 1.68999 to 1.61650, saving model to best_RNN_large_textdata_weights.hdf5
+    102s - loss: 1.3851 - acc: 0.5891 - val_loss: 1.6165 - val_acc: 0.5302
+    Epoch 6/50
+    Epoch 00005: val_loss improved from 1.61650 to 1.57501, saving model to best_RNN_large_textdata_weights.hdf5
+    102s - loss: 1.2809 - acc: 0.6161 - val_loss: 1.5750 - val_acc: 0.5433
+    Epoch 7/50
+    Epoch 00006: val_loss improved from 1.57501 to 1.55025, saving model to best_RNN_large_textdata_weights.hdf5
+    103s - loss: 1.1936 - acc: 0.6390 - val_loss: 1.5502 - val_acc: 0.5527
+    Epoch 8/50
+    Epoch 00007: val_loss improved from 1.55025 to 1.54808, saving model to best_RNN_large_textdata_weights.hdf5
+    103s - loss: 1.1119 - acc: 0.6621 - val_loss: 1.5481 - val_acc: 0.5536
+    Epoch 9/50
+    Epoch 00008: val_loss did not improve
+    103s - loss: 1.0307 - acc: 0.6839 - val_loss: 1.5542 - val_acc: 0.5582
+    Epoch 10/50
+    Epoch 00009: val_loss did not improve
+    102s - loss: 0.9419 - acc: 0.7101 - val_loss: 1.5886 - val_acc: 0.5580
+    Epoch 11/50
+    Epoch 00010: val_loss did not improve
+    103s - loss: 0.8483 - acc: 0.7391 - val_loss: 1.6189 - val_acc: 0.5546
+    Epoch 12/50
+    Epoch 00011: val_loss did not improve
+    102s - loss: 0.7420 - acc: 0.7720 - val_loss: 1.6836 - val_acc: 0.5473
+    Epoch 13/50
+    Epoch 00012: val_loss did not improve
+    102s - loss: 0.6255 - acc: 0.8104 - val_loss: 1.7681 - val_acc: 0.5459
+    Epoch 14/50
+    Epoch 00013: val_loss did not improve
+    102s - loss: 0.5067 - acc: 0.8506 - val_loss: 1.8807 - val_acc: 0.5384
+    Epoch 15/50
+    Epoch 00014: val_loss did not improve
+    102s - loss: 0.3872 - acc: 0.8913 - val_loss: 1.9855 - val_acc: 0.5283
+    Epoch 16/50
+    Epoch 00015: val_loss did not improve
+    102s - loss: 0.2796 - acc: 0.9276 - val_loss: 2.1156 - val_acc: 0.5293
+    Epoch 17/50
+    Epoch 00016: val_loss did not improve
+    103s - loss: 0.1915 - acc: 0.9556 - val_loss: 2.2343 - val_acc: 0.5267
+    Epoch 18/50
+    Epoch 00017: val_loss did not improve
+    102s - loss: 0.1212 - acc: 0.9762 - val_loss: 2.3699 - val_acc: 0.5241
+    Epoch 19/50
+    Epoch 00018: val_loss did not improve
+    102s - loss: 0.0726 - acc: 0.9889 - val_loss: 2.4701 - val_acc: 0.5245
+    Epoch 20/50
+    Epoch 00019: val_loss did not improve
+    102s - loss: 0.0427 - acc: 0.9947 - val_loss: 2.5645 - val_acc: 0.5235
+    Epoch 21/50
+    Epoch 00020: val_loss did not improve
+    102s - loss: 0.0261 - acc: 0.9972 - val_loss: 2.6404 - val_acc: 0.5230
+    Epoch 22/50
+    Epoch 00021: val_loss did not improve
+    102s - loss: 0.0184 - acc: 0.9982 - val_loss: 2.6995 - val_acc: 0.5212
+    Epoch 23/50
+    Epoch 00022: val_loss did not improve
+    102s - loss: 0.0147 - acc: 0.9987 - val_loss: 2.7659 - val_acc: 0.5177
+    Epoch 24/50
+    Epoch 00023: val_loss did not improve
+    102s - loss: 0.0113 - acc: 0.9991 - val_loss: 2.8076 - val_acc: 0.5157
+    Epoch 25/50
+    Epoch 00024: val_loss did not improve
+    102s - loss: 0.0106 - acc: 0.9992 - val_loss: 2.8644 - val_acc: 0.5185
+    Epoch 26/50
+    Epoch 00025: val_loss did not improve
+    102s - loss: 0.1431 - acc: 0.9573 - val_loss: 2.5892 - val_acc: 0.5072
+    Epoch 27/50
+    Epoch 00026: val_loss did not improve
+    102s - loss: 0.4361 - acc: 0.8564 - val_loss: 2.4877 - val_acc: 0.5137
+    Epoch 28/50
+    Epoch 00027: val_loss did not improve
+    102s - loss: 0.1220 - acc: 0.9686 - val_loss: 2.6484 - val_acc: 0.5250
+    Epoch 29/50
+    Epoch 00028: val_loss did not improve
+    102s - loss: 0.0346 - acc: 0.9952 - val_loss: 2.7489 - val_acc: 0.5240
+    Epoch 30/50
+    Epoch 00029: val_loss did not improve
+    102s - loss: 0.0114 - acc: 0.9993 - val_loss: 2.8300 - val_acc: 0.5252
+    Epoch 31/50
+    Epoch 00030: val_loss did not improve
+    102s - loss: 0.0050 - acc: 0.9998 - val_loss: 2.8855 - val_acc: 0.5264
+    Epoch 32/50
+    Epoch 00031: val_loss did not improve
+    102s - loss: 0.0032 - acc: 0.9999 - val_loss: 2.9295 - val_acc: 0.5262
+    Epoch 33/50
+    Epoch 00032: val_loss did not improve
+    102s - loss: 0.0023 - acc: 1.0000 - val_loss: 2.9628 - val_acc: 0.5249
+    Epoch 34/50
+    Epoch 00033: val_loss did not improve
+    102s - loss: 0.0019 - acc: 1.0000 - val_loss: 2.9963 - val_acc: 0.5252
+    Epoch 35/50
+    Epoch 00034: val_loss did not improve
+    100s - loss: 0.0017 - acc: 1.0000 - val_loss: 3.0278 - val_acc: 0.5256
+    Epoch 36/50
+    Epoch 00035: val_loss did not improve
+    100s - loss: 0.0014 - acc: 1.0000 - val_loss: 3.0572 - val_acc: 0.5239
+    Epoch 37/50
+    Epoch 00036: val_loss did not improve
+    99s - loss: 0.0016 - acc: 1.0000 - val_loss: 3.0821 - val_acc: 0.5243
+    Epoch 38/50
+    Epoch 00037: val_loss did not improve
+    99s - loss: 0.0015 - acc: 0.9999 - val_loss: 3.1086 - val_acc: 0.5242
+    Epoch 39/50
+    Epoch 00038: val_loss did not improve
+    99s - loss: 0.0256 - acc: 0.9934 - val_loss: 3.0363 - val_acc: 0.4974
+    Epoch 40/50
+    Epoch 00039: val_loss did not improve
+    99s - loss: 0.6186 - acc: 0.8019 - val_loss: 2.5053 - val_acc: 0.5138
+    Epoch 41/50
+    Epoch 00040: val_loss did not improve
+    99s - loss: 0.1693 - acc: 0.9498 - val_loss: 2.6900 - val_acc: 0.5253
+    Epoch 42/50
+    Epoch 00041: val_loss did not improve
+    99s - loss: 0.0481 - acc: 0.9911 - val_loss: 2.7993 - val_acc: 0.5241
+    Epoch 43/50
+    Epoch 00042: val_loss did not improve
+    99s - loss: 0.0147 - acc: 0.9985 - val_loss: 2.8874 - val_acc: 0.5236
+    Epoch 44/50
+    Epoch 00043: val_loss did not improve
+    100s - loss: 0.0064 - acc: 0.9996 - val_loss: 2.9431 - val_acc: 0.5243
+    Epoch 45/50
+    Epoch 00044: val_loss did not improve
+    100s - loss: 0.0038 - acc: 0.9999 - val_loss: 2.9859 - val_acc: 0.5230
+    Epoch 46/50
+    Epoch 00045: val_loss did not improve
+    99s - loss: 0.0027 - acc: 0.9999 - val_loss: 3.0252 - val_acc: 0.5244
+    Epoch 47/50
+    Epoch 00046: val_loss did not improve
+    100s - loss: 0.0020 - acc: 1.0000 - val_loss: 3.0552 - val_acc: 0.5250
+    Epoch 48/50
+    Epoch 00047: val_loss did not improve
+    100s - loss: 0.0018 - acc: 1.0000 - val_loss: 3.0841 - val_acc: 0.5241
+    Epoch 49/50
+    Epoch 00048: val_loss did not improve
+    100s - loss: 0.0018 - acc: 0.9999 - val_loss: 3.1153 - val_acc: 0.5251
+    Epoch 50/50
+    Epoch 00049: val_loss did not improve
+    99s - loss: 0.0013 - acc: 1.0000 - val_loss: 3.1459 - val_acc: 0.5259
+
+
+
+```python
+# summarize history for accuracy
+plt.plot(hist.history['acc'])
+plt.plot(hist.history['val_acc'])
+plt.title('model accuracy')
+plt.ylabel('accuracy')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.show()
+# summarize history for loss
+plt.plot(hist.history['loss'])
+plt.plot(hist.history['val_loss'])
+plt.title('model loss')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.show()
+```
+
+
+![png](images/marx_files/marx_18_0.png)
+
+
+
+![png](images/marx_files/marx_18_1.png)
+
+
+
+```python
+# disclaimer: this function is also taken from Udacity's AI ND
+def predict_next_chars(model,input_chars,num_to_predict):     
+    predicted_chars = ''
+    for i in range(num_to_predict):
+        x_test = np.zeros((1, window_size, len(chars)))
+        for t, char in enumerate(input_chars):
+            x_test[0, t, chars_to_indices[char]] = 1.
+
+        test_predict = model.predict(x_test,verbose = 0)[0]
+
+        r = np.argmax(test_predict)                          
+        d = indices_to_chars[r]
+
+        predicted_chars+=d
+        input_chars+=d
+        input_chars = input_chars[1:]
+    return predicted_chars
+```
+
+
+```python
+def print_text(idx, weight):
+    f = open('text_gen_output/best_RNN_large_textdata_output.txt', 'w')
+    model.load_weights(weight)
+
+    start_inds = [idx]
+    for s in start_inds:
+        start_index = s
+        input_chars = text[start_index: start_index + window_size]
+
+        # use the prediction function
+        predict_input = predict_next_chars(model,input_chars,num_to_predict = 500)
+
+        # print out input characters
+        line = '-------------------' + '\n'
+        print(line)
+        f.write(line)
+
+        input_line = 'input chars = ' + '\n' +  input_chars + '"' + '\n'
+        print(input_line)
+        f.write(input_line)
+
+        # print out predicted characters
+        predict_line = 'predicted chars = ' + '\n' +  predict_input + '"' + '\n'
+        print(predict_line)
+        f.write(predict_line)
+    f.close()
+
+print("Printing out the best weight")
+print_text(2000, 'best_RNN_large_textdata_weights.hdf5')
+
+print("printing out the last weight")
+print_text(2000, 'last_RNN_large_textdata_weights.hdf5')
+```
+
+    Printing out the best weight
+    input chars =
+
+>values become a reality only by use or consumption: they also constitute the substance of all wealt"
+
+    predicted chars =
+
+>h and the same time the substance of the labour of the means of production is the same time the substance of the labour of the means of production is the same time the substance of the labour of the means of production is the same time the substance of the labour of the means of production is the same time the substance of the labour of the means of production is the same time the substance of the labour of the means of production is the same time the substance of the labour of the means of prod"
+
+    printing out the last weight
+    input chars =
+
+>values become a reality only by use or consumption: they also constitute the substance of all wealt"
+
+    predicted chars =
+
+>h of a capitalist, and exchangevalue, it is of necessary for the restriment of the product of one which the value of labourpower, whilst value, therefore, is not the some of the former in magert, the solaten proceess, who all work for his more he distross the productive result of production, and consequently, and has not the same time necessary for the restriment of the product of one which the value of labourpower, whilst value, therefore, is not the some of the former in magert, the solaten pr"
+
+
+
+### Result
+To my surprise, the last weight (50th epoch) with horrific validation loss and accuracy generates texts that are much more legible than the best weight (saved from the 8th epoch). This means the model generates text by seriously overfitting and regurgitating back what it has been shown.
