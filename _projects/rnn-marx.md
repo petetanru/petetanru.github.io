@@ -16,14 +16,14 @@ import pandas as pd
 import matplotlib.pyplot as plt
 ```
 
-I acquired the MS word version of Das Kapital from here: https://www.marxists.org/archive/marx/works/1867-c1/ and turned it into a text format I could load.
+I acquired the MS word version of [Das Kapital Volume 1](https://www.marxists.org/archive/marx/works/1867-c1/) and turned it into a text format I could load.
 
 
 ```python
 raw_text = open('capital-vol1.txt', 'r', encoding='latin-1').read()
 ```
 
-Let's see snippets of it to get some idea of what we're dealing with.
+After chopping off the copyrights and the introduction, let's see snippets of it to get some idea of what we're dealing with.
 
 
 ```python
@@ -107,7 +107,7 @@ def window_transform_text(text, window_size, step_size):
 
 ```python
 # Turn windows of text into vectors of one-hot encoding. 
-# Andrej's implementation shapes both X and y to be window-sized. But I think predicting for 1 letter after X is more intuitive
+# Andrej's implementation shapes both X and y to be window-sized. But I think predicting for 1 letter after X is more intuitive for
 # a wider audience though, so we will go with that. 
     
 def encode_io_pairs(text,window_size,step_size):
@@ -540,3 +540,11 @@ pred_my_text("                                                  ")
     —---- Generating with seed: "                                                  "
                                                               b.bbllof,, ,,  c. o ut that the ingulation of a commodity of a house, the labourer has no existence of a hoars of labour. he continual productivity of old commodities, as the only form of the capitalist mode of production, and of commodities is required to replace and of furnacty the labour of the necessary labour-time in no more than an article of the money that the labourer has no length
 
+### Conclusion
+1. Char-2-char basically overfits a text to regurgitates stuff back out. The best performing model is not the one with least loss.
+2. Not much insight to be gained over bag of words..
+3. Really big models and texts don't fit into my GPU memory. Perhaps there's a way to do it on Pytorch.
+
+### TODO
+1. Test random sampling can do as well reading text from left to write (X, y generation function)
+2. Test whether redundant windows actually improve the performance (as opposed to just increasing epochs)
