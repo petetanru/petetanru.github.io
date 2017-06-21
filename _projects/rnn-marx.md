@@ -372,11 +372,10 @@ plt.show()
 
 ![png]({{https://petetanru.github.io}}/images/marx_files/output_18_1.png)
 
-Neat! Now let's try to generate texts based on those two weights. We will also try to generate with different temperature of softmax.
+Neat! Now let's try to generate texts based on those two weights. We begin by writing a sampler that would give us a diverse range of characters. The sampler sample an index from a probability of array. 
 
 ```python
 def sample(preds, temperature=1.0):
-    # helper function to sample an index from a probability array
     preds = np.asarray(preds).astype('float64')
     preds = np.log(preds) / temperature
     exp_preds = np.exp(preds)
@@ -385,7 +384,7 @@ def sample(preds, temperature=1.0):
     return np.argmax(probas)
 ```
 
-We'll try out different level of diversity in characters through softmax temperature as well.
+We'll try out different level of diversity in characters through softmax temperature as well, has an impact on dampening or boosting the difference in probabilities across elements. 
 
 ```python
 def pred_text(weight):
