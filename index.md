@@ -2,7 +2,7 @@
 layout: empty/homepage
 feature:
   posts:
-    latest: 3
+    latest: 2
     list:
       <!-- - "/2016/03/19/markdown-examples" -->
   projects:
