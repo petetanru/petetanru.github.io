@@ -1,13 +1,13 @@
 ---
 layout: post
-title:  "The wisdom of Marx with seq2seq"
+title:  "The wisdom of Marx with char-rnn"
 date:   2017-06-17 15:43:00 +0700
 tag: AI, marx, rnn, deep-learning
 ---
 
 ### Quick recurrent neural network text generation with Marx
 
-Marx had many great and poor insights about society. I'm keen to see if a simple seq2seq LSTM recurrent neural network can reproduce either of the above by reading Das Kapital Vol.1, his masterpiece. Let's go!
+Marx had many great and poor insights about society. I'm keen to see if a simple character LSTM recurrent neural network can reproduce either of the above by reading Das Kapital Vol.1, his masterpiece. Let's go!
 
 
 ```python
@@ -540,8 +540,8 @@ pred_my_text("                                                  ")
     —---- Generating with seed: "                                                  "
                                                               b.bbllof,, ,,  c. o ut that the ingulation of a commodity of a house, the labourer has no existence of a hoars of labour. he continual productivity of old commodities, as the only form of the capitalist mode of production, and of commodities is required to replace and of furnacty the labour of the necessary labour-time in no more than an article of the money that the labourer has no length
 
-### Conclusion
-1. seq2seq basically overfits a text to regurgitates stuff back out. The best performing model is not the one with least loss.
+### Conclusion (so far)
+1. Char-rnn basically overfits a text to regurgitates stuff back out. The best performing model is not the one with least loss.
 2. Not much insight to be gained over bag of words..
 3. Really big models and texts don't fit into my GPU memory. Perhaps there's a way to do it on Pytorch.
 
