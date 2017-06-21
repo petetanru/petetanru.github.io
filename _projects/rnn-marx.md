@@ -366,11 +366,11 @@ plt.show()
 ```
 
 
-![png](images/marx_files/output_18_0.png)
+![png]({{https://petetanru.github.io}}/images/marx_files/output_18_0.png)
 
 
 
-![png](images/marx_files/output_18_1.png)
+![png]({{https://petetanru.github.io}}/images/marx_files/output_18_1.png)
 
 Neat! Now let's try to generate texts based on those two weights. We will also try to generate with different temperature of softmax.
 
