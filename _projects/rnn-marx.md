@@ -285,11 +285,11 @@ for epoch in range(n_epochs):
     # evaluate with validation set
     model.eval()
     for batch_idx, (data, target) in enumerate(val_loader):
-        # send input to GPU and wrap in torch Variable
+        # send input to GPU and wrap in torch Variable with no auto backprop
         data, target = data.cuda(), target.cuda()
         data, target = Variable(data, volatile=True), Variable(target)
 
-        # forward, backward, optimize
+        # forward only
         hidden = repackage_hidden(hidden)
         output, hidden = model(data, hidden)
         loss = criterion(output, target)
