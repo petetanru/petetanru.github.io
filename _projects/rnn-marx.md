@@ -1,12 +1,9 @@
 ---
 layout: post
-title:  "The wisdom of Marx with char-rnn"
+title:  "The wisdom of Marx with Char-RNN in Pytorch"
 date:   2017-06-17 15:43:00 +0700
 tag: AI, marx, rnn, deep-learning
 ---
-
-
-# Char-RNN in Pytorch: The Wisdom of Marx
 
 - Update 2017-07-01: changed implementation from Keras to Pytorch
 
