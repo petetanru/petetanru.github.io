@@ -85,12 +85,12 @@ def textToWin(text, seq_len, step_size):
     return inputs, outputs
 
 inptest, outtest = textToWin('hello world', 5, 1)
-print("sample size = ", len(inptest), inptest)
-print("sample size = ", len(outtest), outtest)
+print("x sample size = ", len(inptest), inptest)
+print("y sample size = ", len(outtest), outtest)
 ```
 
-    sample size =  6 ['hello', 'ello ', 'llo w', 'lo wo', 'o wor', ' worl']
-    sample size =  6 [' ', 'w', 'o', 'r', 'l', 'd']
+    x sample size =  6 ['hello', 'ello ', 'llo w', 'lo wo', 'o wor', ' worl']
+    y sample size =  6 [' ', 'w', 'o', 'r', 'l', 'd']
 
 
 Next we incorporate the previous function and turn the outputted list of strings into tensors of indices (aka vectors), so that our model can process them.
