@@ -460,8 +460,9 @@ The temperature indicates how "conservative" we want the text generator to be, w
 Surprisingly, it's not clear to me that the last weight, with much higher loss, performs worse.
 
 ### Conclusion (so far)
-Vanilla seq2seq basically overfits a text to regurgitates stuff back out. The most legible text may not necessarily come from the model with the least loss. We would need to find a way to evaluate the generated text first.
+For the task of text generation, a basic(?) seq2seq model seems to overfit a text to regurgitates stuff back out. It's not clear that the least loss model actually generates the most legible text, but overfitting does not seem to hurt it.
 
 ### TODO
 1. Try beam search
 2. Try putting attention on it to see what the the model attends to.
+3. Research how others have tried to evaluate generated texts.
