@@ -3,7 +3,7 @@ layout: empty/about
 title: Pete Peeradej Tanruangporn
 ---
 
-I am current a mentor for Udacity's Artificial Intelligence Nanodegree. Previously, I worked for an e-payment company that provides services for developing countries called MOL Global. My roles included project management and business analysis.
+Currently a mentor for Udacity's Artificial Intelligence Nanodegree. Previously, I worked for an e-payment company that provides services for developing countries called MOL Global. My roles included project management and business analysis.
 
 
 In my previous life I did social science and policy research. I have an Mphil in Politics from Cambridge U., UK, and a BA in Economics and International Development from Trent U., Canada. I have worked for academia, international organizations, and a think tank.
