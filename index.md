@@ -2,7 +2,7 @@
 layout: empty/homepage
 feature:
   projects:
-    latest: 1
+    latest: 2
     list:
       <!-- - "/projects/polar" -->
   posts:
