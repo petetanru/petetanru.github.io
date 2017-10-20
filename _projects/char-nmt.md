@@ -12,6 +12,6 @@ Translating Thai is challenging because of two big reasons.
 
 Because of these challenges, perhaps a machine translation model that is most suited for the task is one that could develop its own segmentation as it trains. 
 
-I implemented a pytorch version a of this paper: https://arxiv.org/abs/1610.03017 in the following link: https://github.com/petetanru/NMT_pytorch
+I implemented a pytorch version a of this [paper](https://arxiv.org/abs/1610.03017) in my [github](https://github.com/petetanru/NMT_pytorch)
 
 I begin by training it on a simple ENG-FRE corpus and it's performance has been competitive compared to other models that rely on tokenizers. 
