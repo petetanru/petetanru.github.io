@@ -78,7 +78,7 @@ My models are (very) simplified version of actual state-of-art NMTs. For the enc
 | Learning rate       | 1e-4                                     |
 | Optimizer           | Adam                                     |
 
-##Preprocessing##
+## Preprocessing ##
 
 Each sentence is convereted to a vector with the maximum length of the longest sentence in the mini batch. The data that I use is are 'segments of words', which is basically a line from TED Talk's subtitle. They are not necessarily a sentence. This carries some misalignment risk, but is much more viable for our task since the length is much shorter. 
 
