@@ -53,7 +53,9 @@ Namely, I will be evaluating the following ways to capture vocabs:
 
 Is meaning language bound, or do concepts exist in abstract which then get decoded to languages? For the machine learning field, the answer seems to be the latter, as performance can often be incrased by training on multiple source languages, and translating to one. 
 
-Since training takes a while, here is my TODO list. 
+The focus has mostly been on non-Asian languages though, especially those that share similar alphabets. I want to see whether SEA languages can learn from each other, or how Asian2Asian languages perform.
+
+Here's my TODO list.
 
 - [x] TH-EN
 - [ ] TH-VI
