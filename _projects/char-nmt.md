@@ -26,7 +26,7 @@ Machine translation with Thai has historically not been good. Several of the key
    as คนโขมยของ (person, steal, stuff). 
    ```
 
-2. **Start - End of sentence tagging** - This is probably the biggest issue for the field of Thai Machine Translation because it causes misalignment when tyring to create parallel corpuses. The root of the problem itself is two-pronged. In terms of writing, Thais use spaces to indicate both commas and period. No letter indicates an end of a sentence (EOS). In terms of language use, Thais have a habit of starting their sentences with connector terms such as 'because', 'but', 'following', etc, making it hard even for natives to tell where the end of sentence is when translating. 
+2. **Start/End of sentence marking** - This is arguably the biggest problem for the field of Thai Machine Translation. The lack of end of sentence (EOS) marking makes it hard to create parallel corpuses, so that further research could be conducted. The root of the problem itself is two-pronged. In terms of writing system, Thai uses space to indicate both commass and periods. No letter indicates an end of a sentence. In terms of language use, Thais have a habit of starting their sentences with connector terms such as 'because', 'but', 'following', etc, making it hard even for natives to tell where the end of sentence is when translating.
 
    i.e.: "should this connector or the next connector be the end of a sentence?"
 
@@ -44,10 +44,15 @@ The most obvious input that you would put into your NMT would be words, but the 
 
 Namely, I will be evaluating the following ways to capture vocabs:
 
-1. **Word level** - This will be our baseline. Rakpong has recently made a CNN-based tokenizer that performs quite adequately, achieving F1 of 98.1%, only a bit lower than NECTEC's private 98.6% tokernizer.
-2. **Character level** - Traditionally, character level RNNs for translation tasks were not very popular because the overly long sequence weould create vanishing gradients problem, and it would also make the model too computationally expensive. Recently, Lee et al. (2017) proposed a character level NMT that does address the long sequence problem by utilizing 1D CNNs to create different sized n-grams nodes, and compress the sequence with maxpool striding. 
+1. **Word level** - This will be our baseline. Rakpong recently made a CNN-based tokenizer that performs quite adequately, achieving F1 of 98.1%, only a bit lower than NECTEC's private F1 98.6% tokernizer.
+
+2. **Character level** - Traditionally, character level RNNs for translation tasks were not very popular because the overly long sequence weould create vanishing gradients problem, and it would also make the model too computationally expensive. Recently, Lee et al. (2017) proposed a character level NMT that does address the long sequence problem by utilizing 1D CNNs to create different sized n-grams nodes, and compress the sequence with maxpool striding.
+
 3. **Byte-Pair Encoding / Wordpiece** - Sennrich et al. (2016) and Wu et al. (2016) proposed a way to represent language by breaking words down to subword units, and using the most common 8k - 32k of those subword word units as your vocab.
-4. **Thai Character Cluster** - Theeramunkong et al. (2000) suggested a technique called 'Thai character clustering' (TCC) that groups Thai characters based on the Thai writing system into clusters that cannot be further separated. This is possible because in Thai, there are vowel and tone marks that cannot stand alone. This is similar to BPE/wordpiece, but rule based rather than data-driven. The english equivalent would be to call 'qu' a character cluster, since 'u' always follow 'q'. 
+
+4. **Thai Character Cluster** - Theeramunkong et al. (2000) suggested a technique called 'Thai character clustering' (TCC) that groups Thai characters based on the Thai writing system into clusters that cannot be further separated. This is possible because in Thai, there are vowel and tone marks that cannot stand alone. This is similar to BPE/wordpiece, but rule based rather than data-driven. The english equivalent would be to call 'qu' a character cluster, since 'u' always follow 'q'.
+
+    > Although commonly referred to as the "Thai alphabet", the script is in fact not a true alphabet but an abugida, a writing system in which each consonant may invoke an inherent vowel sound. In the case of the Thai script this is an implied 'a' or 'o'. Consonants are written horizontally from left to right, with vowels arranged above, below, to the left, or to the right of the corresponding consonant, or in a combination of positions. - Wikipedia
 
 ### Multi-lingual ###
 
@@ -96,9 +101,12 @@ Each sentence is convereted to a vector with the maximum length of the longest s
 
 As reference, our BLEU scores seem to be on the right track. The baseline BLEU score of 10.7 is about the same as this [paper's](https://arxiv.org/pdf/1606.07947.pdf) small model baseline for TH-EN, which used the attention LSTM with 100 hidden units (they also tried 500 units) and beam search k=1 to 10.6 BLEU on the 2015 TED Talk corpus. 
 
-## Analysis ## 
+## Analysis ##
 
-I'm suprised by how well TCC performed, achieving only 0.4 lower BLEU despite the vocab size being only 1/10th of the word level model. Google reports that it gets good results with 8k - 40k vocab size when using subword units. TCC produces 1/4th the size of vocab yet still manages to learn quite well. 
+**TCC**: I'm suprised by how well TCC performed, achieving only 0.4 lower BLEU despite the vocab size being only 1/10th of the word level model. Google reports that it gets good results with 8k - 40k vocab size when using subword units. TCC produces 1/4th the size of vocab yet still manages to learn quite well.
+
+**Character**: I know that Lee's paper manage to reach state of art, using english-german corpus. I'm surprised this has not worked as well for TH-EN. I'd like to see whether its performance would start to catch up given a large enough network though.
+
 
 -[ ] TODO: compare TCC to BPE. 
 
