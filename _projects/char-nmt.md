@@ -44,7 +44,7 @@ The most obvious input that you would put into your NMT would be words, but the 
 
 Namely, I will be evaluating the following ways to capture vocabs:
 
-1. **Word level** - Rakpong has recently made a CNN-based tokenizer that performs quite adequately, achieving F1 of 98.1%, only a bit lower than NECTEC's private 98.6% tokernizer. 
+1. **Word level** - This will be our baseline. Rakpong has recently made a CNN-based tokenizer that performs quite adequately, achieving F1 of 98.1%, only a bit lower than NECTEC's private 98.6% tokernizer.
 2. **Character level** - Traditionally, character level RNNs for translation tasks were not very popular because the overly long sequence weould create vanishing gradients problem, and it would also make the model too computationally expensive. Recently, Lee et al. (2017) proposed a character level NMT that does address the long sequence problem by utilizing 1D CNNs to create different sized n-grams nodes, and compress the sequence with maxpool striding. 
 3. **Byte-Pair Encoding / Wordpiece** - Sennrich et al. (2016) and Wu et al. (2016) proposed a way to represent language by breaking words down to subword units, and using the most common 8k - 32k of those subword word units as your vocab.
 4. **Thai Character Cluster** - Theeramunkong et al. (2000) suggested a technique called 'Thai character clustering' (TCC) that groups Thai characters based on the Thai writing system into clusters that cannot be further separated. This is possible because in Thai, there are vowel and tone marks that cannot stand alone. This is similar to BPE/wordpiece, but rule based rather than data-driven. The english equivalent would be to call 'qu' a character cluster, since 'u' always follow 'q'. 
