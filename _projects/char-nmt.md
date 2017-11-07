@@ -214,7 +214,7 @@ The differences are outlined in the tables below:
 
 #### Analysis 
 
-- **Baseline** : Wow, the initial BLEU score for VN-EN is really high! I suspect this is a combination of more samples (twice the amount of english words in VN-EN 2.6m compared TH-EN 1.3m), and the subject-verb-objct syntax. 
+- **Baseline** : Wow, the initial BLEU score for VN-EN is really high! I suspect this is a combination of more samples (twice the amount of english words in VN-EN 2.6m compared TH-EN 1.3m), and the fact that you could tokenize VN with spaces. 
 - Very interseting to note that for this pair, the character level's performance rivals BPE, but both are quite far from word level. 
 
 ## Multilingual 
