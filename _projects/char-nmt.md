@@ -9,15 +9,22 @@ This post is still a work in progress. Will update as I try out more stuff
 
 Link to [repository](https://github.com/petetanru)
 
+- Updated 8 Nov 2017
+  - Added multilingual and subword tokenizers (BPE/TCC)
+  - Added bilingual with Vietnamese
+
+
 - Updated 30 Oct 2017 
   - Performs BLEU measuring against validation set
-  - Encoder for character, character-clusters, sub-word/BPE, and word level. 
+  - Encoder for character and word level. 
+
+
 
 ## Current Challenges
 
 Machine translation with Thai has historically not been good. Several of the key challenges include:
 
-1. **Word segmentation** - Thai does not use space and word segmentation not easy. It boils down to understanding the context and ruling out words that do not make sense.
+1. **Word segmentation** - Thai does not use space and word segmentation is not easy. It boils down to understanding the context and ruling out words that do not make sense.
 
    ```
    Example 1: ตากลม could either be ตา-กลม (round eyes) or ตาก-ลม (drying by wind). 
@@ -25,98 +32,248 @@ Machine translation with Thai has historically not been good. Several of the key
    but this similar pattern of noun-verb-noun does not always make up a word, such 
    as คนโขมยของ (person, steal, stuff). 
    ```
+   This is the same issue that other Asian languages such as Japense and Chinese face. For languages with space, a similar but less extreme problem would be multi-word expressions, like 'pomme de terre'. 
 
-2. **Start/End of sentence marking** - This is arguably the biggest problem for the field of Thai Machine Translation. The lack of end of sentence (EOS) marking makes it hard to create parallel corpuses, so that further research could be conducted. The root of the problem itself is two-pronged. In terms of writing system, Thai uses space to indicate both commass and periods. No letter indicates an end of a sentence. In terms of language use, Thais have a habit of starting their sentences with connector terms such as 'because', 'but', 'following', etc, making it hard even for natives to tell where the end of sentence is when translating.
+2. **Start/End of sentence marking** - This is arguably the biggest problem for the field of Thai Machine Translation. The lack of end of sentence (EOS) marking makes it hard to create parallel corpuses, the basis of most research in this field. The root of the problem is two-pronged. In terms of writing system, Thai uses space to indicate both commas and periods. No letter indicates an end of a sentence. In terms of language use, Thais have a habit of starting their sentences with connector terms such as 'because', 'but', 'following', etc, making it hard even for natives to tell where the end of sentence is when translating.
 
    i.e.: "should this connector or the next connector be the end of a sentence?"
 
-   A simple way of handling this is to treat them all as EOS, but that would obviously create several short sentences that may be is unnaturally lacking in context. Again, the point is that no fixed rules would work here, only probabilities. Without proper editing, it is not uncommon to see run-on sentences when translating Thai writings to other languages.
+   A simple way of handling this is to treat them all as EOS, but that would obviously create several short sentences that may be is unnaturally lacking in context. The point is that no fixed rules would work here, only probabilities. Without proper editing, it is not uncommon to see run-on sentences when translating Thai writings to other languages.
 
 3. **Lack of large parallel data** - This is probably self explanatory.. But most recently, we now have TED Talks from [WIT3!](https://wit3.fbk.eu/)
 
 The lack of a perfect (to trivialize, perfect here only means something that spacing and periods achieve in English) word segmenting (#1) and sentence boundary marking (#2) tools create problems that snowball into the performance of higher level task, such as translation.  
 
+
+
 ## Addressing the challenges
 
 ### Vocabs ###
 
-The most obvious input that you would put into your NMT would be words, but the state of art models have found great success in using subword units and character levels as well! Given that Thai has no perfect tokenizer, it would be interesting to see if the model could learn to form words on teh fly and perform well! 
+The most obvious input that you would put into your NMT would be words, but the state of art models have found great success in using subword units and character levels as well! Given that Thai has no perfect tokenizer, it would be interesting to see if the model could learn to form words on the fly or subword units that are more useful than the whole word (which may be wrongly created anyway)! 
 
 Namely, I will be evaluating the following ways to capture vocabs:
 
-1. **Word level** - This will be our baseline. Rakpong recently made a CNN-based tokenizer that performs quite adequately, achieving F1 of 98.1%, only a bit lower than NECTEC's private F1 98.6% tokernizer.
+1. **Word level** - This will be our baseline. Rakpong recently made a CNN-based tokenizer that performs quite adequately, achieving F1 of 98.1%, only a bit lower than NECTEC's private state of art tokenizer with F1 at 98.6%.
 
 2. **Character level** - Traditionally, character level RNNs for translation tasks were not very popular because the overly long sequence weould create vanishing gradients problem, and it would also make the model too computationally expensive. Recently, Lee et al. (2017) proposed a character level NMT that does address the long sequence problem by utilizing 1D CNNs to create different sized n-grams nodes, and compress the sequence with maxpool striding.
 
-3. **Byte-Pair Encoding / Wordpiece** - Sennrich et al. (2016) and Wu et al. (2016) proposed a way to represent language by breaking words down to subword units, and using the most common 8k - 32k of those subword word units as your vocab.
+3. **Byte-Pair Encoding (BPE) ** - Sennrich et al. (2016) proposed a way to represent language by breaking words down to subword units, encoding common pair of letters as a unique unit. This helps reduce the sequence length as well as the total vocabulary size. 
 
-4. **Thai Character Cluster** - Theeramunkong et al. (2000) suggested a technique called 'Thai character clustering' (TCC) that groups Thai characters based on the Thai writing system into clusters that cannot be further separated. This is possible because in Thai, there are vowel and tone marks that cannot stand alone. This is similar to BPE/wordpiece, but rule based rather than data-driven. The english equivalent would be to call 'qu' a character cluster, since 'u' always follow 'q'.
+4. **Thai Character Cluster (TCC)**  - Theeramunkong et al. (2000) suggested a technique called 'Thai character clustering' (TCC) that groups Thai characters based on the Thai writing system into clusters that cannot be further separated. This is possible because in Thai, there are vowel and tone marks that cannot stand alone. This is similar to BPE/wordpiece, but rule based rather than data-driven. The english equivalent would be to call 'qu' a character cluster, since 'u' always follow 'q'.
 
     > Although commonly referred to as the "Thai alphabet", the script is in fact not a true alphabet but an abugida, a writing system in which each consonant may invoke an inherent vowel sound. In the case of the Thai script this is an implied 'a' or 'o'. Consonants are written horizontally from left to right, with vowels arranged above, below, to the left, or to the right of the corresponding consonant, or in a combination of positions. - Wikipedia
+
+
 
 ### Multi-lingual ###
 
 Is meaning language bound, or do concepts exist in abstract which then get decoded to languages? For the machine learning field, the answer seems to be the latter, as performance can often be incrased by training on multiple source languages, and translating to one. 
 
-The focus has mostly been on non-Asian languages though, especially those that share similar alphabets. I want to see whether SEA languages can learn from each other, or how Asian2Asian languages perform.
+The focus has mostly been on non-Asian languages though, especially those that share similar alphabets. I want to see whether SEA languages can learn from each other, especially those that do NOT share characters. Luckily, there are two SEA corpuses for TED Talk that are sizable enough, Thai and Vietnamese. 
 
-Here's my TODO list.
+Our experiment train on the TH-EN  and VI-EN data and evaluate on TH-EN. We want to know whether the weights learned from another langauge can help translated our initial pair or not. Our vocabulary size will increase by twofold, since they do not share alphabets. 
 
-- [x] TH-EN
-- [ ] TH-VI
-- [ ] TH-KR
-- [ ] TH+VI - EN
-- [ ] TH+VI - KR
-- [ ] TH+KR - EN
 
-I focus on translating with Thai as the source language, rather than the target, because the current [Moses BLEU script](https://github.com/moses-smt/mosesdecoder/blob/master/scripts/generic/multi-bleu.perl) is built for languages that does not use spaces in an ambiguous way (ie: Thai). 
+
+## Data
+
+We will use TED Talk 2016's subtitle data set to train our data. In detail,  the [WIT3]() script finds talks that exist in both languages, and finds parallel subtitle within the talk. Each 'sample segment' is a subtitle line. Sometimes it is a complete sentence and sometimes not. The script then reconstruct the segments into a sentence, based on ascii punctuations of the target language. This means you should not build sentence level parallel corpus, using the WIT3 script with languages like Thai or Chinese as the target language. Thai has no end of sentence markers, and Chinese does not use ascii punctuations. 
+
+| Language Pair        |  Sample segments | Total words with white space split() |
+| -------------------- | ---------------: | -----------------------------------: |
+| Thai - English       | 187,731 segments |      324,981 (TH)<br> 1,383,482 (EN) |
+| Thai - Vietnamese    | 151,814 segments |       257,909 (TH)<br>1,471,282 (VN) |
+| Vietnamese - English | 271,848 segments |    2,006,934 (VN)<br> 2,629,575 (EN) |
+
+Note that the word count for Thai using conventional split() is very low. This is because Thai does not use space, and needs to be further tokenized beyond the conventional split(). 
+
+I mainly use segments as it reduces the sequence length of my data a lot and makesexperimentation much more feasible (given time, memory constraint, and the fact that I own only 1 GPU). 
+
+
+
+## Preprocessing
+
+Each sentence is convereted to a vector with the maximum length of the longest sentence in the mini batch. I filter out samples with sequences that are too long. I set the acceptable maximum length of sequence for word-level at 30, subword units at 50, and characters at 250 (almost double of twitter's 140 characters limit!). 
+
+**Note for BPE** - Sennrich's BPE script relies on being able to tokenize the data. For this, we preprocess our Thai data for BPE training with our word-level tokenizer. Without tokenizing the Thai text, the tokens that BPE ends up creating are characters. 
+
+In contrast, TCC and character level models do not require any tokenization in preprocessing. 
+
+
+
+## Evaluation ###
+
+We use the [Moses](https://github.com/moses-smt/mosesdecoder/blob/master/scripts/generic/multi-bleu.perl) tokenizer and BLEU scipt to preprocess our result and the test set, before evaluating.
+
+I focus on translating with Thai as the source language, rather than the target, because the current script is built for languages that does not use spaces in an ambiguous way (ie: Thai) and Thai's tokenizer is among the things we are testing. 
+
+
 
 ## Model and hyper parameters ##
 
-My models are (very) simplified version of actual state-of-art NMTs. For the encoder, I use either a typical GRU or Lee's implementation of [CNN+GRU](https://arxiv.org/abs/1610.03017) for character level encoding. For the decoder, I use [Luong's](http://aclweb.org/anthology/D15-1166) global attention GRU model. The default parameters are: 
+The models we will use are smaller versions of actual state-of-art NMTs. They are on average less than 1/4 the size of the original model. I base my model on two papers: 
 
-|                     | Default parameters                       |
-| ------------------- | ---------------------------------------- |
-| Hidden units        | 256                                      |
-| Layers              | 1                                        |
-| Direction           | 1                                        |
-| Embedding size      | 256 for words and TCC<br />128 for characters |
-| K width and filters | [1,2,3,4,5,6,7,8] with<br />[200,200,250,250,300,300,350,350] |
-| Learning rate       | 1e-4                                     |
-| Optimizer           | Adam                                     |
+1. [Luong et al.'s](http://aclweb.org/anthology/D15-1166) global attention model for word and subword level encoding, and decoding.
+2. Lee et al.'s implementation of [CNN+GRU](https://arxiv.org/abs/1610.03017) for character level encoding. 
 
-## Preprocessing ##
+The differences are outlined in the tables below:
 
-Each sentence is convereted to a vector with the maximum length of the longest sentence in the mini batch. The data that I use is are 'segments of words', which is basically a line from TED Talk's subtitle. They are not necessarily a sentence. This carries some misalignment risk, but is much more viable for our task since the length is much shorter. 
+#### GRU Encoder for word, BPE, and TCC
 
-## Result of comparison ##
+|                | Luong's | Our model |
+| -------------- | ------- | --------- |
+| RNN Cell       | LSTM    | GRU       |
+| Embedding size | 1000    | 256       |
+| Hidden units   | 1000    | 256       |
+| Layers         | 2       | 1         |
+| Directions     | 1       | 1         |
+| Dropout        | 0.2     | 0.2       |
 
-| Model      | Base line NMT | TCC      | BPE  | Char2word  |
-| ---------- | :------------ | -------- | ---- | ---------- |
-| Input      | Word          | TCC      |      | Characters |
-| Vocab size | 28701         | 2737     |      | 87         |
-| Encoder    | GRU           | GRU      |      | CNN-GRU    |
-| Decoder    | GRU-attn      | GRU-attn |      | GRU-attn   |
-| BLEU Score | 10.7          | 10.3     |      | 7.7        |
+#### CNN-GRU Encoder for characters
 
-As reference, our BLEU scores seem to be on the right track. The baseline BLEU score of 10.7 is about the same as this [paper's](https://arxiv.org/pdf/1606.07947.pdf) small model baseline for TH-EN, which used the attention LSTM with 100 hidden units (they also tried 500 units) and beam search k=1 to 10.6 BLEU on the 2015 TED Talk corpus. 
+|                               | Lee's                                    | Our model                                |
+| ----------------------------- | ---------------------------------------- | ---------------------------------------- |
+| RNN Cell                      | GRU                                      | GRU                                      |
+| Embedding size                | 128                                      | 128                                      |
+| Hidden units                  | 512                                      | 256                                      |
+| Layers                        | 1                                        | 1                                        |
+| Direction                     | 2                                        | 1                                        |
+| K-width <br>and # of filters  | [1,2,3,4,5,6,7,8] with<br />[200,200,250,250,300,300,350,350] | [1,2,3,4,5,6,7,8] with<br />[200,200,250,250,300,300,350,350] |
+| Kernel stride <br>Pool stride | 1 <br>5                                  | 1<br>5                                   |
+| Highway units                 | 4 layers of 2100 units(?*)               | 2100                                     |
 
-## Analysis ##
+*not stated in the paper how many hidden units were used. 
 
-**TCC**: I'm suprised by how well TCC performed, achieving only 0.4 lower BLEU despite the vocab size being only 1/10th of the word level model. Google reports that it gets good results with 8k - 40k vocab size when using subword units. TCC produces 1/4th the size of vocab yet still manages to learn quite well.
+#### GRU Decoder with attention
 
-**Character**: I know that Lee's paper manage to reach state of art, using english-german corpus. I'm surprised this has not worked as well for TH-EN. I'd like to see whether its performance would start to catch up given a large enough network though.
+|              | Luong's* | Lee's** | Our model |
+| ------------ | -------- | ------- | --------- |
+| RNN Cell     | LSTM     | GRU     | GRU       |
+| Embedding    | 1000     | 512     | 256       |
+| Hidden units | 1000     | 1024    | 256       |
+| Layers       | 2        | 2       | 1         |
+| Directions   | 1        | 1       | 1         |
+
+\* Global attention is one of Luong's implementation of attention. In his paper, he showcases a variety them, with a more sophisticated version called "local attention" achieving the best NMT performance. 
+
+\** Lee et al. actually uses [Bahdanau et al.](https://arxiv.org/abs/1409.0473) original version of attention, which is implemented slightly different and more complex. 
+
+#### Optimizers
+
+| Optimizing algorithm | Adam             |
+| -------------------- | ---------------- |
+| Learning rate        | 1e-4             |
+| Batch size           | 128 - 256        |
+| Gradient clipping    | 1                |
+| Dropout              | 0.2 (inside GRU) |
 
 
--[ ] TODO: compare TCC to BPE. 
+
+## Result of experiments ##
+
+### TH-EN
+
+| Model      | NMT Baseline | TCC2word | BPE2word <br>(60k operations) | Char2word  |
+| ---------- | :----------- | -------- | ----------------------------- | ---------- |
+| Input      | Word         | TCC      | BPE                           | Characters |
+| Vocab size | 28701        | 2737     | 19193                         | 195        |
+| Encoder    | GRU          | GRU      | GRU                           | CNN-GRU    |
+| Decoder    | GRU-attn     | GRU-attn | GRU-attn                      | GRU-attn   |
+| BLEU Score | 10.7         | 10.3     | 9.88                          | 7.7        |
+
+#### Analysis
+
+- **Score range**: For reference, our BLEU scores seem to be on the right track. The baseline BLEU score of 10.7 is about the same as this [paper's](https://arxiv.org/pdf/1606.07947.pdf) small model baseline for TH-EN, which used the attention LSTM with 100 hidden units (they also tried 500 units with the same result) and beam search k=1 to get 10.6 BLEU on the 2015 TED Talk corpus. 
+- **Subword units - TCC**: TCC achieves -0.4 BLEU while using only 1/10 the vocab size of the baseline word level model. This really shows really well how much information on the vocabulary side can actually be compressed, especially if given a good guideline. 
+- **Subword units - BPE**: The data-driven BPE achieved about -0.4 to that of TCC though, despite using a larger set of vocabulary. I'm am actually somewhat surprised by the size of BPE vocabs, given the intial vocab size. The size was reduced to only 2/3. 
+
+## TH-VN
+
+| Model      | NMT Baseline             | TCC2word           | BPE2word<br>(60k operations) | Chars2word             |
+| ---------- | ------------------------ | ------------------ | ---------------------------- | ---------------------- |
+| Input      | Word                     | TCC                | BPE                          | Characters             |
+| Vocab size | 25640 (TH)<br>17445 (VN) | 2653 (TH)<br>17445 | 17181 (TH)<br>17445 (VN)     | 190 (TH)<br>17455 (VN) |
+| Encoder    | GRU                      | GRU                | GRU                          | GRU+CNN                |
+| Decoder    | GRU-attn                 | GRU-attn           | GRU-attn                     | GRU-attn               |
+| BLEU       | 9.15                     | 8.62               | 8.92                         | 7.31                   |
+
+#### Analysis
+
+- **Subword units - TCC/BPE**: It is interesting to note that for TH-VN, BPE outperforms TCC in terms of BLEU performance by +0.3 while being only -0.22 lower than the word level baseline. 
+
+## VN-EN
+
+| Model      | NMT Baseline             | BPE2word                  | Char2word              |
+| ---------- | ------------------------ | ------------------------- | ---------------------- |
+| Input      | Word                     | BPE                       | Characters             |
+| Vocab size | 24964 (VN)<br>44264 (EN) | 32011 (VN) <br>44264 (EN) | 251 (VN)<br>44262 (EN) |
+| Encoder    | GRU                      | GRU                       | CNN-GRU                |
+| Decoder    | GRU-attn                 | GRU-attn                  | GRU                    |
+| BLEU       | 18.7                     | 15.0                      | 15.1                   |
+
+#### Analysis 
+
+- **Baseline** : Wow, the initial BLEU score for VN-EN is really high! I suspect this is a combination of more samples (twice the amount of english words in VN-EN 2.6m compared TH-EN 1.3m), and the subject-verb-objct syntax. 
+- Very interseting to note that for this pair, the character level's performance rivals BPE, but both are quite far from word level. 
+
+## Multilingual 
+
+| Model      | word2word                   | BPE2word                    | Char2word    |
+| ---------- | --------------------------- | --------------------------- | ------------ |
+| Input      | TH + VN                     | TH + VN                     | TH + VN      |
+| Vocab size | 54631 (TH+VN)<br>48145 (EN) | 51195 (TH+VN)<br>48415 (EN) | 327<br>48415 |
+| Encoder    | GRU                         | GRU                         | CNN-GRU      |
+| Decoder    | GRU-attn                    | GRU-attn                    | GRU-attn     |
+| BLEU       | 7.46                        | 4.54                        | 4.45         |
+
+#### Analysis
+
+- ...It is surprising to see that multilingual training did not help with the performance of TH-EN in our experiment, doing at best -3.24 BLEU worse than the baseline. In fact it performs worse as we deviate further away from word level. 
+- Unlike other multilingual models that were made as an extention to a bilingual NMT model, I did not increase the size of any parameter. This probably contributed 
+
+## Take aways ##
+
+**Thai, Tokenizers, small models** - Given relatively small models, tokenization is VERY important for languages that require word segmentations like Thai. Perhaps this explains the Japanese NLP fied's preoccupation with tokenizers, and indeed the birth of Google's subword unit tokenizer - wordpiece. 
+
+**Promises of subword-units** - The ability of TCC to reduce the vocabulary size by x10 while achieving slightly lower BLEU was very impressive to me. As TCC does not rely on any preprocessing, it is also very quick. The top tokenizers for Thai are deep learning models, which means they are rather slow. 
+
+**BPE** - Testing out BPE as a way of tokenizing was somewhat funny because it requires the text to be preprocessed with a word tokenizer, so that a dictionary can be created. This means the score of BPE is somewhat dependent on the tokenizer's ability. 
+
+**Character** - The character level models did not perform so well in this experiment. One possible explanation is that character level NMTs require the model to be sufficiently big enough before they start to rival other NMTs. It also seems to  suffer when encoding Thai relative to BPE, in contrast to their equal performance for Vietnamese and multilingual. 
+
+**Multilingual** 
+
+The result of training our NMT on both TH and VN was rather poor. I am not sure if increasing the model's size will actually make it outperform a bilingual model. It looked as if we simply added noise to the model. 
+
+Perhaps we need a different model to create a hidden space that could better handle the difference in language. 
+
+Immediately though, one thing we could do is to study how others have done multilingual for KO - JPN - ZH, and see what we could learn from those models. 
+
+
+
+## New ideas? ##
+
+**Tokernizer for non-space languages**
+
+I think there is some room to create a new tokenizer that is data driven, unsupervised, not reliant on existing tokenizers, and not reliant on whitespace splits. [Sentencepiece](https://github.com/google/sentencepiece) seems to be heading in that direction and it will be very exciting to test it out. 
+
+It's not entirely clear to me though, why BPE / Wordpiece mostly limit itself to unigrams. The advantages that CNN models for text is their abilityt o create multiple n-grams features, and use them all jointly for analysis. 
+
+**Visualizing multilingual advantages and failures**
+
+It would be really cool if we can visualize what training multilingual makes a model pay / not pay attention to that it had not / had before. I suppose a very simple way to do this is by mapping attention for a bilingual pair, and then compare it to a multilingual one. 
+
+
 
 ## Quick References ##
 
 1. A lot of ideas and design taken from [Lee's NYU code](https://github.com/nyu-dl/dl4mt-c2c). Particularly preprocessing. My implementation of his CNN-GRU model MIGHT have some mistakes though, since I don't code Theano and base my pytorch implementation mostly from reading his [paper](https://arxiv.org/abs/1610.03017).
 2. TED Talk data from [WIT3](https://wit3.fbk.eu/). 
-3. TCC implemented by [Korakot](https://github.com/korakot). 
+3. Python version of TCC implemented by [Korakot](https://github.com/korakot). 
 4. Deepcut Thai tokenizer from [Rakpong](https://github.com/rkcosmos/deepcut)
 5. Global attention from Luong [paper](http://aclweb.org/anthology/D15-1166). 
 6. Moses for Tokernizer and BLEU script. [Link](https://github.com/moses-smt/mosesdecoder)
-7. Academia, stackoverflow, google, and the internet for existing, and making it possible for a self-taught person like me to put something like this together.  
+7. The original attention paper by [Bahdanau et al.](https://arxiv.org/abs/1409.0473) 
+8. Academia, stackoverflow, google, and the internet for existing, and making it possible for a self-taught person like me to put something like this together.  
 
