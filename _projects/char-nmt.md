@@ -80,21 +80,21 @@ Our experiment train on the TH-EN  and VI-EN data and evaluate on TH-EN. We want
 
 We will use TED Talk 2016's subtitle data set to train our data. In detail,  the [WIT3]() script finds talks that exist in both languages, and finds parallel subtitle within the talk. Each 'sample segment' is a subtitle line. Sometimes it is a complete sentence and sometimes not. The script then reconstruct the segments into a sentence, based on ascii punctuations of the target language. This means you should not build sentence level parallel corpus, using the WIT3 script with languages like Thai or Chinese as the target language. Thai has no end of sentence markers, and Chinese does not use ascii punctuations. 
 
-| Language Pair        |  Sample segments | Total words with white space split() |
-| -------------------- | ---------------: | -----------------------------------: |
-| Thai - English       | 187,731 segments |      324,981 (TH)<br> 1,383,482 (EN) |
-| Thai - Vietnamese    | 151,814 segments |       257,909 (TH)<br>1,471,282 (VN) |
-| Vietnamese - English | 271,848 segments |    2,006,934 (VN)<br> 2,629,575 (EN) |
+| Language Pair        |                       Sample segments | Total words with white space split() |
+| -------------------- | ------------------------------------: | -----------------------------------: |
+| Thai - English       | 187,731 segments <br>81,242 sentences |      324,981 (TH)<br> 1,383,482 (EN) |
+| Thai - Vietnamese    |  151,814 segments<br>62,300 sentences |       257,909 (TH)<br>1,471,282 (VN) |
+| Vietnamese - English | 271,848 segments<br>116,443 sentences |    2,006,934 (VN)<br> 2,629,575 (EN) |
 
 Note that the word count for Thai using conventional split() is very low. This is because Thai does not use space, and needs to be further tokenized beyond the conventional split(). 
 
-I mainly use segments as it reduces the sequence length of my data a lot and makesexperimentation much more feasible (given time, memory constraint, and the fact that I own only 1 GPU). 
+I mainly use segments as it reduces the sequence length of my data a lot and makes experimentation much more feasible (given time, memory constraint, and the fact that I own only 1 GPU). 
 
 
 
 ## Preprocessing
 
-Each sentence is convereted to a vector with the maximum length of the longest sentence in the mini batch. I filter out samples with sequences that are too long. I set the acceptable maximum length of sequence for word-level at 30, subword units at 50, and characters at 250 (almost double of twitter's 140 characters limit!). 
+Each sentence is convereted to a vector with the maximum length of the longest sentence in the mini batch. I filter out samples with sequences that are too long. I set the acceptable maximum length of sequence for word-level at 30, subword units at 50, and characters at 250. 
 
 **Note for BPE** - Sennrich's BPE script relies on being able to tokenize the data. For this, we preprocess our Thai data for BPE training with our word-level tokenizer. Without tokenizing the Thai text, the tokens that BPE ends up creating are characters. 
 
@@ -184,7 +184,7 @@ The differences are outlined in the tables below:
 
 #### Analysis
 
-- **Score range**: For reference, our BLEU scores seem to be on the right track. The baseline BLEU score of 10.7 is about the same as this [paper's](https://arxiv.org/pdf/1606.07947.pdf) small model baseline for TH-EN, which used the attention LSTM with 100 hidden units (they also tried 500 units with the same result) and beam search k=1 to get 10.6 BLEU on the 2015 TED Talk corpus. 
+- **Score range**: For reference, our BLEU scores seem to be on the right track. The baseline BLEU score of 10.7 is about the same as this [paper's](https://arxiv.org/pdf/1606.07947.pdf) small model baseline for TH-EN, which used 2 layers attention LSTM with 100 hidden units and got 10.6 BLEU on the 2015 TED Talk corpus, which comes *pre segmented* by a Thai state research unit's state of art tokenizer (although this is not shared to other researchers). 
 - **Subword units - TCC**: TCC achieves -0.4 BLEU while using only 1/10 the vocab size of the baseline word level model. This really shows really well how much information on the vocabulary side can actually be compressed, especially if given a good guideline. 
 - **Subword units - BPE**: The data-driven BPE achieved about -0.4 to that of TCC though, despite using a larger set of vocabulary. I'm am actually somewhat surprised by the size of BPE vocabs, given the intial vocab size. The size was reduced to only 2/3. 
 
