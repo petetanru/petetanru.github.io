@@ -170,7 +170,9 @@ The differences are outlined in the tables below:
 
 
 
-## Result of experiments ##
+## Result of experiments* ##
+
+*std. devs to be included later with more runs
 
 ### TH-EN
 
