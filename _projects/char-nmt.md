@@ -72,7 +72,9 @@ Is meaning language bound, or do concepts exist in abstract which then get decod
 
 The focus has mostly been on non-Asian languages though, especially those that share similar alphabets. I want to see whether SEA languages can learn from each other, especially those that do NOT share characters. Luckily, there are two SEA corpuses for TED Talk that are sizable enough, Thai and Vietnamese. 
 
-Our experiment train on the TH-EN  and VI-EN data and evaluate on TH-EN. We want to know whether the weights learned from another langauge can help translated our initial pair or not. Our vocabulary size will increase by twofold, since they do not share alphabets. 
+Our experiment will train on the TH-EN  and VI-EN data and evaluate on TH-EN. We want to know whether the weights learned from another langauge can help translated our initial pair or not. At the word level, our vocabulary size will increase by  about twofold, since they do not share alphabets. 
+
+We will also initialize every sentence with a token that indicates the source language, an idea pioneered by Google's multilingual [paper](https://arxiv.org/abs/1611.04558). Note though, that our RNN cells do not have skip connection like those in Google's paper. 
 
 
 
@@ -219,20 +221,20 @@ The differences are outlined in the tables below:
 - **Baseline** : Wow, the initial BLEU score for VN-EN is really high! I suspect this is a combination of more samples (twice the amount of english words in VN-EN 2.6m compared TH-EN 1.3m), and the fact that you could tokenize VN with spaces. 
 - Very interseting to note that for this pair, the character level's performance rivals BPE, but both are quite far from word level. 
 
-## Multilingual 
+## Multilingual (with google style tokens)
 
-| Model      | word2word                   | BPE2word                    | Char2word    |
-| ---------- | --------------------------- | --------------------------- | ------------ |
-| Input      | TH + VN                     | TH + VN                     | TH + VN      |
-| Vocab size | 54631 (TH+VN)<br>48145 (EN) | 51195 (TH+VN)<br>48415 (EN) | 327<br>48415 |
-| Encoder    | GRU                         | GRU                         | CNN-GRU      |
-| Decoder    | GRU-attn                    | GRU-attn                    | GRU-attn     |
-| BLEU       | 7.46                        | 4.54                        | 4.45         |
+| Model      | word2word                   | BPE2word                    | Char2word        |
+| ---------- | --------------------------- | --------------------------- | ---------------- |
+| Input      | TH + VN                     | TH + VN                     | TH + VN          |
+| Vocab size | 54631 (TH+VN)<br>48145 (EN) | 51195 (TH+VN)<br>48415 (EN) | 327<br>48415     |
+| Encoder    | GRU                         | GRU                         | CNN-GRU          |
+| Decoder    | GRU-attn                    | GRU-attn                    | GRU-attn         |
+| BLEU       | 8.34                        | (under revision)            | (under revision) |
 
 #### Analysis
 
-- ...It is surprising to see that multilingual training did not help with the performance of TH-EN in our experiment, doing at best -3.24 BLEU worse than the baseline. In fact it performs worse as we deviate further away from word level. 
-- Unlike other multilingual models that were made as an extention to a bilingual NMT model, I did not increase the size of any parameter. This probably contributed 
+- ...It is surprising to see that multilingual training did not help with the performance of TH-EN in our experiment, doing at best over -2 BLEU worse than the baseline.
+- Perhaps the model is too small for multilingual? Perhaps TH and VN don't share as much syntax as we hoped? Of course, this assumes there are no bugs in my code. :)
 
 ## Take aways ##
 
@@ -264,7 +266,7 @@ It's not entirely clear to me though, why BPE / Wordpiece mostly limit itself to
 
 **Visualizing multilingual advantages and failures**
 
-It would be really cool if we can visualize what training multilingual makes a model pay / not pay attention to that it had not / had before. I suppose a very simple way to do this is by mapping attention for a bilingual pair, and then compare it to a multilingual one. 
+It would be really cool if we can visualize what training multilingual makes a model pay / not pay attention to that it had not / had before. I suppose a very simple way to do this is by mapping attention for a bilingual pair, and then compare it to a multilingual one. Google's [paper](https://arxiv.org/abs/1611.04558) has some visualization for syntax, using t-SNE projection, which is really cool but also somewhat hard to understand intuitively. 
 
 
 
