@@ -229,7 +229,7 @@ The differences are outlined in the tables below:
 | Vocab size | 54631 (TH+VN)<br>48145 (EN) | 51195 (TH+VN)<br>48415 (EN) | 327<br>48415     |
 | Encoder    | GRU                         | GRU                         | CNN-GRU          |
 | Decoder    | GRU-attn                    | GRU-attn                    | GRU-attn         |
-| BLEU       | 8.34                        | (under revision)            | (under revision) |
+| BLEU       | 8.55                        | 8.04                        | (under revision) |
 
 #### Analysis
 
@@ -252,7 +252,7 @@ The result of training our NMT on both TH and VN was rather poor. I am not sure 
 
 Perhaps we need a different model to create a hidden space that could better handle the difference in language. 
 
-Immediately though, one thing we could do is to study how others have done multilingual for KO - JPN - ZH, and see what we could learn from those models. 
+Google was able to improve the score of JP-EN by training it with KO-EN though, so theoretically, differences in alphabets shouldn't make it impossible to improve the score. 
 
 
 
