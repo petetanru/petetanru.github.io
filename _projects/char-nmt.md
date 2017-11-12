@@ -219,54 +219,64 @@ The differences are outlined in the tables below:
 #### Analysis 
 
 - **Baseline** : Wow, the initial BLEU score for VN-EN is really high! I suspect this is a combination of more samples (twice the amount of english words in VN-EN 2.6m compared TH-EN 1.3m), and the fact that you could tokenize VN with spaces. 
-- Very interseting to note that for this pair, the character level's performance rivals BPE, but both are quite far from word level. 
+- **BPE vs Char** - Noticibly, BPE and char level performance are similar, for encoding vietnamese, unlike Thai. 
 
 ## Multilingual (with google style tokens)
 
-| Model      | word2word                   | BPE2word                    | Char2word        |
-| ---------- | --------------------------- | --------------------------- | ---------------- |
-| Input      | TH + VN                     | TH + VN                     | TH + VN          |
-| Vocab size | 54631 (TH+VN)<br>48145 (EN) | 51195 (TH+VN)<br>48415 (EN) | 327<br>48415     |
-| Encoder    | GRU                         | GRU                         | CNN-GRU          |
-| Decoder    | GRU-attn                    | GRU-attn                    | GRU-attn         |
-| BLEU       | 8.55                        | 8.04                        | (under revision) |
+| Model           | word2word                   | BPE2word                    | Char2word     |
+| --------------- | --------------------------- | --------------------------- | ------------- |
+| Input<br>Output | TH + VN<br>EN               | TH + VN<br>EN               | TH + VN<br>EN |
+| Vocab size      | 54631 (TH+VN)<br>48145 (EN) | 51195 (TH+VN)<br>48415 (EN) | 327<br>48415  |
+| Encoder         | GRU                         | GRU                         | CNN-GRU       |
+| Decoder         | GRU-attn                    | GRU-attn                    | GRU-attn      |
+| BLEU            | 9.27                        | 8.24                        | 8.23          |
 
 #### Analysis
 
-- ...It is surprising to see that multilingual training did not help with the performance of TH-EN in our experiment, doing at best over -2 BLEU worse than the baseline.
-- Perhaps the model is too small for multilingual? Perhaps TH and VN don't share as much syntax as we hoped? Of course, this assumes there are no bugs in my code. :)
+- I am surprised to see that multilingual training did not help with the performance of TH-EN in our experiment, and this is true across all tokenizations. 
+- Similar to VN-EN's experiment, BPE performs as well as character level model. 
+- Though not shown here, but when training with multilingual dataset, the model takes a longer time to overfit than when trianing with bilingual pair. 
 
 ## Take aways ##
 
-**Thai, Tokenizers, small models** - Given relatively small models, tokenization is VERY important for languages that require word segmentations like Thai. Perhaps this explains the Japanese NLP fied's preoccupation with tokenizers, and indeed the birth of Google's subword unit tokenizer - wordpiece. 
+**Thai, Tokenizers, small models** - Given relatively small models (256 x 2 layers with attention), word level tokenization seems to outperform other levels for Thai. This is probably due to the fact that the model has to spend less time figuring out spellings and can just dedicate itself entirely syntax and meanings matching.  
 
-**Promises of subword-units** - The ability of TCC to reduce the vocabulary size by x10 while achieving slightly lower BLEU was very impressive to me. As TCC does not rely on any preprocessing, it is also very quick. The top tokenizers for Thai are deep learning models, which means they are rather slow. 
+**Promises of subword-units** - The ability of TCC to reduce the vocabulary size by x10 while achieving slightly lower BLEU than word level very impressive to me. Compared to BPE, it achieves similar results. However, since TCC does not rely on any preprocessing, it is also very quick. The only issue with TCC is that it is Thai language specific. 
 
-**BPE** - Testing out BPE as a way of tokenizing was somewhat funny because it requires the text to be preprocessed with a word tokenizer, so that a dictionary can be created. This means the score of BPE is somewhat dependent on the tokenizer's ability. 
+Testing out BPE as a way of tokenizing was somewhat funny because it requires the text to be preprocessed with a word tokenizer, so that a dictionary can be created. This means the score of BPE is somewhat dependent on the tokenizer's ability. 
 
-**Character** - The character level models did not perform so well in this experiment. One possible explanation is that character level NMTs require the model to be sufficiently big enough before they start to rival other NMTs. It also seems to  suffer when encoding Thai relative to BPE, in contrast to their equal performance for Vietnamese and multilingual. 
+**Character** - The character level models did not perform so well in this experiment. One possible explanation is that character level NMTs require the model to be sufficiently big enough before they start to rival other NMTs. It also seems to  suffer when encoding Thai relative to BPE, unlike Vietnamese and multilingual. 
 
 **Multilingual** 
 
-The result of training our NMT on both TH and VN was rather poor. I am not sure if increasing the model's size will actually make it outperform a bilingual model. It looked as if we simply added noise to the model. 
+The result of training our NMT on both TH and VN was not poor but did not see much gain over bilingual settings. I am not sure if increasing the model's size will actually make it outperform a bilingual model. 
 
-Perhaps we need a different model to create a hidden space that could better handle the difference in language. 
+Perhaps the model is too small for multilingual? Perhaps TH and VN don't share as much syntax as we hoped? 
 
 Google was able to improve the score of JP-EN by training it with KO-EN though, so theoretically, differences in alphabets shouldn't make it impossible to improve the score. 
 
 
 
-## New ideas? ##
+## Ideas for more experiments ##
 
-**Tokernizer for non-space languages**
+**Tokernizers**
 
-I think there is some room to create a new tokenizer that is data driven, unsupervised, not reliant on existing tokenizers, and not reliant on whitespace splits. [Sentencepiece](https://github.com/google/sentencepiece) seems to be heading in that direction and it will be very exciting to test it out. 
+I think there is some room to create a new tokenizer that is data driven, unsupervised, not reliant on existing tokenizers, and not reliant on whitespace splits. 
 
-It's not entirely clear to me though, why BPE / Wordpiece mostly limit itself to unigrams. The advantages that CNN models for text is their abilityt o create multiple n-grams features, and use them all jointly for analysis. 
+It's also not entirely clear to me, why BPE / Wordpiece mostly limit itself to unigrams. The advantages that CNN models for text is their ability to create multiple n-grams features, and use them all jointly for analysis. 
+
+Also, I wonder if the idea behind TCC, to identify unique character groups that cannot be further broken down', can be generalized to other non-abugida languages. In English, besides 'qu', are there other characters are are 'always' together and cannot be further broken down? Would it make sense to predefine a list of characters attached with vowels, like 'be' and try training over them? The downfall would be that we wouldn't be able to apply the same algorithm to every language. 
+
+**Models**
+
+-[ ] Try out transformer models. [link](https://arxiv.org/abs/1706.03762)
+
+
+-[ ] See if characterlevel CNNs can be combined with transformers? Or whether it makes sense to? 
 
 **Visualizing multilingual advantages and failures**
 
-It would be really cool if we can visualize what training multilingual makes a model pay / not pay attention to that it had not / had before. I suppose a very simple way to do this is by mapping attention for a bilingual pair, and then compare it to a multilingual one. Google's [paper](https://arxiv.org/abs/1611.04558) has some visualization for syntax, using t-SNE projection, which is really cool but also somewhat hard to understand intuitively. 
+It would be really cool if we can visualize what training multilingual makes a model pay / not pay attention to that it had not / had before. I suppose a very simple way to do this is by mapping attention for a bilingual pair, and then compare it to a multilingual one. Another simple way is to print out test set sentences and see the difference in the result. But those seem more anecdotal, is it possible to visualize more broadly, at the language level? I think the closest might be the visualization in Google's [paper](https://arxiv.org/abs/1611.04558), using t-SNE projection to show syntax similarities, which is really cool but also somewhat hard to understand intuitively. 
 
 
 
