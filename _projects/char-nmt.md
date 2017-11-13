@@ -5,12 +5,10 @@ date:   2017-10-20 14:00:00 +0700
 tag: AI, rnn, CNN, deep-learning, NLP, NMT
 ---
 
-This post is still a work in progress. Will update as I try out more stuff
-
 Link to [repository](https://github.com/petetanru)
 
 - Updated 8 Nov 2017
-  - Added multilingual and subword tokenizers (BPE/TCC)
+  - Added multilingual with google tokenizers and subword tokenizers (BPE/TCC)
   - Added bilingual with Vietnamese
 
 
@@ -54,7 +52,7 @@ The most obvious input that you would put into your NMT would be words, but the 
 
 Namely, I will be evaluating the following ways to capture vocabs:
 
-1. **Word level** - This will be our baseline. Rakpong recently made a CNN-based tokenizer that performs quite adequately, achieving F1 of 98.1%, only a bit lower than NECTEC's private state of art tokenizer with F1 at 98.6%.
+1. **Word level** - Rakpong recently made a CNN-based tokenizer that performs quite adequately, achieving F1 of 98.1%, only a bit lower than NECTEC's private state of art tokenizer with F1 at 98.6%.
 
 2. **Character level** - Traditionally, character level RNNs for translation tasks were not very popular because the overly long sequence weould create vanishing gradients problem, and it would also make the model too computationally expensive. Recently, Lee et al. (2017) proposed a character level NMT that does address the long sequence problem by utilizing 1D CNNs to create different sized n-grams nodes, and compress the sequence with maxpool striding.
 
@@ -80,7 +78,7 @@ We will also initialize every sentence with a token that indicates the source la
 
 ## Data
 
-We will use TED Talk 2016's subtitle data set to train our data. In detail,  the [WIT3]() script finds talks that exist in both languages, and finds parallel subtitle within the talk. Each 'sample segment' is a subtitle line. Sometimes it is a complete sentence and sometimes not. The script then reconstruct the segments into a sentence, based on ascii punctuations of the target language. This means you should not build sentence level parallel corpus, using the WIT3 script with languages like Thai or Chinese as the target language. Thai has no end of sentence markers, and Chinese does not use ascii punctuations. 
+We will use TED Talk 2016's subtitle data set to train our data. Unlike the Thai data made available for the 2015 IWSLT evaluation campaign, our data does not come tokenized. To build up our corpus, the [WIT3]() script finds talks that exist in both languages, and finds parallel subtitle within the talk. Each 'sample segment' is a subtitle line. Sometimes it is a complete sentence and sometimes not. The script then reconstruct the segments into a sentence, based on ascii punctuations of the target language. This means you should not build sentence level parallel corpus, using the WIT3 script with languages like Thai or Chinese as the target language. Thai has no end of sentence markers, and Chinese does not use ascii punctuations. 
 
 | Language Pair        |                       Sample segments | Total words with white space split() |
 | -------------------- | ------------------------------------: | -----------------------------------: |
@@ -237,19 +235,19 @@ The differences are outlined in the tables below:
 - Similar to VN-EN's experiment, BPE performs as well as character level model. 
 - Though not shown here, but when training with multilingual dataset, the model takes a longer time to overfit than when trianing with bilingual pair. 
 
-## Take aways ##
+## Conclusion ##
 
-**Thai, Tokenizers, small models** - Given relatively small models (256 x 2 layers with attention), word level tokenization seems to outperform other levels for Thai. This is probably due to the fact that the model has to spend less time figuring out spellings and can just dedicate itself entirely syntax and meanings matching.  
+**Thai, Tokenizers, small models** - Given relatively small models (256 x 2 layers with attention), word level tokenization seems to outperform other levels for Thai. One hypothesis is that the model has to spend less time figuring out spellings and can just dedicate itself entirely syntax and meanings matching.  
 
-**Promises of subword-units** - The ability of TCC to reduce the vocabulary size by x10 while achieving slightly lower BLEU than word level very impressive to me. Compared to BPE, it achieves similar results. However, since TCC does not rely on any preprocessing, it is also very quick. The only issue with TCC is that it is Thai language specific. 
+**Promises of subword-units** - The ability of TCC to reduce the vocabulary size by x10 while achieving slightly lower BLEU than word-level and comparable performance to BPE was very impressive to me. The only issue with TCC is that it is Thai language specific. 
 
-Testing out BPE as a way of tokenizing was somewhat funny because it requires the text to be preprocessed with a word tokenizer, so that a dictionary can be created. This means the score of BPE is somewhat dependent on the tokenizer's ability. 
+BPE achieves similar results to TCC but requires the text to be preprocessed with a word tokenizer, so that a dictionary can be created. This means the score of BPE is somewhat dependent on the tokenizer's ability. 
 
-**Character** - The character level models did not perform so well in this experiment. One possible explanation is that character level NMTs require the model to be sufficiently big enough before they start to rival other NMTs. It also seems to  suffer when encoding Thai relative to BPE, unlike Vietnamese and multilingual. 
+**Character** - The character level models did not perform well in this experiment. One possible explanation is that character level NMTs require the model to be sufficiently big enough before they start to rival other NMTs. It also seems to  suffer when encoding Thai relative to BPE, unlike Vietnamese and multilingual. 
 
 **Multilingual** 
 
-The result of training our NMT on both TH and VN was not poor but did not see much gain over bilingual settings. I am not sure if increasing the model's size will actually make it outperform a bilingual model. 
+The results of training our NMT on both TH and VN were not poor but did not see much gain over bilingual settings. 
 
 Perhaps the model is too small for multilingual? Perhaps TH and VN don't share as much syntax as we hoped? 
 
