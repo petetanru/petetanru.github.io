@@ -104,7 +104,7 @@ In contrast, TCC and character level models do not require any tokenization in p
 
 ## Evaluation ###
 
-We use the [Moses](https://github.com/moses-smt/mosesdecoder/blob/master/scripts/generic/multi-bleu.perl) tokenizer and BLEU scipt to preprocess our result and the test set, before evaluating.
+We use the [Moses](https://github.com/moses-smt/mosesdecoder/blob/master/scripts/generic/multi-bleu.perl) tokenizer and BLEU scipt to preprocess our result and the test set, before evaluating. 
 
 I focus on translating with Thai as the source language, rather than the target, because the current script is built for languages that does not use spaces in an ambiguous way (ie: Thai) and Thai's tokenizer is among the things we are testing. 
 
@@ -174,15 +174,17 @@ The differences are outlined in the tables below:
 
 *std. devs to be included later with more runs
 
+*BLEU scores are for validation set
+
 ### TH-EN
 
-| Model      | NMT Baseline | TCC2word | BPE2word <br>(60k operations) | Char2word  |
-| ---------- | :----------- | -------- | ----------------------------- | ---------- |
-| Input      | Word         | TCC      | BPE                           | Characters |
-| Vocab size | 28701        | 2737     | 19193                         | 195        |
-| Encoder    | GRU          | GRU      | GRU                           | CNN-GRU    |
-| Decoder    | GRU-attn     | GRU-attn | GRU-attn                      | GRU-attn   |
-| BLEU Score | 10.7         | 10.3     | 9.88                          | 7.7        |
+| Model      | NMT Baseline             | TCC2word                | BPE2word <br>(60k operations) | Char2word              |
+| ---------- | :----------------------- | ----------------------- | ----------------------------- | ---------------------- |
+| Input      | Word                     | TCC                     | BPE                           | Characters             |
+| Vocab size | 28701 (TH)<br>36113 (EN) | 2737 (TH)<br>36113 (EN) | 19193 (TH)<br>36113 (EN)      | 195 (TH)<br>36113 (EN) |
+| Encoder    | GRU                      | GRU                     | GRU                           | CNN-GRU                |
+| Decoder    | GRU-attn                 | GRU-attn                | GRU-attn                      | GRU-attn               |
+| BLEU Score | 10.7                     | 10.3                    | 9.88                          | 7.7                    |
 
 #### Analysis
 
@@ -192,13 +194,13 @@ The differences are outlined in the tables below:
 
 ## TH-VN
 
-| Model      | NMT Baseline             | TCC2word           | BPE2word<br>(60k operations) | Chars2word             |
-| ---------- | ------------------------ | ------------------ | ---------------------------- | ---------------------- |
-| Input      | Word                     | TCC                | BPE                          | Characters             |
-| Vocab size | 25640 (TH)<br>17445 (VN) | 2653 (TH)<br>17445 | 17181 (TH)<br>17445 (VN)     | 190 (TH)<br>17455 (VN) |
-| Encoder    | GRU                      | GRU                | GRU                          | GRU+CNN                |
-| Decoder    | GRU-attn                 | GRU-attn           | GRU-attn                     | GRU-attn               |
-| BLEU       | 9.15                     | 8.62               | 8.92                         | 7.31                   |
+| Model      | NMT Baseline             | TCC2word                | BPE2word<br>(60k operations) | Chars2word             |
+| ---------- | ------------------------ | ----------------------- | ---------------------------- | ---------------------- |
+| Input      | Word                     | TCC                     | BPE                          | Characters             |
+| Vocab size | 25640 (TH)<br>17445 (VN) | 2653 (TH)<br>17445 (VN) | 17181 (TH)<br>17445 (VN)     | 190 (TH)<br>17455 (VN) |
+| Encoder    | GRU                      | GRU                     | GRU                          | GRU+CNN                |
+| Decoder    | GRU-attn                 | GRU-attn                | GRU-attn                     | GRU-attn               |
+| BLEU       | 9.15                     | 8.62                    | 8.92                         | 7.31                   |
 
 #### Analysis
 
@@ -221,13 +223,13 @@ The differences are outlined in the tables below:
 
 ## Multilingual (with google style tokens)
 
-| Model           | word2word                   | BPE2word                    | Char2word     |
-| --------------- | --------------------------- | --------------------------- | ------------- |
-| Input<br>Output | TH + VN<br>EN               | TH + VN<br>EN               | TH + VN<br>EN |
-| Vocab size      | 54631 (TH+VN)<br>48145 (EN) | 51195 (TH+VN)<br>48415 (EN) | 327<br>48415  |
-| Encoder         | GRU                         | GRU                         | CNN-GRU       |
-| Decoder         | GRU-attn                    | GRU-attn                    | GRU-attn      |
-| BLEU            | 9.27                        | 8.24                        | 8.23          |
+| Model           | word2word                   | BPE2word                    | Char2word                 |
+| --------------- | --------------------------- | --------------------------- | ------------------------- |
+| Input<br>Output | TH + VN<br>EN               | TH + VN<br>EN               | TH + VN<br>EN             |
+| Vocab size      | 54631 (TH+VN)<br>48145 (EN) | 51195 (TH+VN)<br>48415 (EN) | 327 (TH+VN)<br>48415 (EN) |
+| Encoder         | GRU                         | GRU                         | CNN-GRU                   |
+| Decoder         | GRU-attn                    | GRU-attn                    | GRU-attn                  |
+| BLEU            | 9.27                        | 8.24                        | 8.23                      |
 
 #### Analysis
 
