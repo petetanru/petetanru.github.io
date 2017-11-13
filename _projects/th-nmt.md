@@ -5,7 +5,7 @@ date:   2017-10-20 14:00:00 +0700
 tag: AI, rnn, CNN, deep-learning, NLP, NMT
 ---
 
-Link to [repository](https://github.com/petetanru)
+Link to [repository](https://github.com/petetanru/NMT_pytorch)
 
 - Updated 8 Nov 2017
   - Added multilingual with google tokenizers and subword tokenizers (BPE/TCC)
