@@ -269,10 +269,11 @@ Also, I wonder if the idea behind TCC, to identify unique character groups that 
 
 **Models**
 
--[ ] Try out transformer models. [link](https://arxiv.org/abs/1706.03762)
+— Do a direct comparison of all the above results, with double the GRU units and embedding (256 to 512), and see if subword level,  character level, and multilingual models start to catch up to word level's performance. 
 
+— Try out transformer models. [link](https://arxiv.org/abs/1706.03762)
 
--[ ] See if characterlevel CNNs can be combined with transformers? Or whether it makes sense to? 
+— See if characterlevel CNNs can be combined with transformers? Or whether it makes sense to? 
 
 **Visualizing multilingual advantages and failures**
 
@@ -289,5 +290,7 @@ It would be really cool if we can visualize what training multilingual makes a m
 5. Global attention from Luong [paper](http://aclweb.org/anthology/D15-1166). 
 6. Moses for Tokernizer and BLEU script. [Link](https://github.com/moses-smt/mosesdecoder)
 7. The original attention paper by [Bahdanau et al.](https://arxiv.org/abs/1409.0473) 
-8. Academia, stackoverflow, google, and the internet for existing, and making it possible for a self-taught person like me to put something like this together.  
+8. Byte-pair encoding paper by [Sennrich](https://arxiv.org/abs/1508.07909)
+9. Google's Multilingual NMT paper by [Wu](https://arxiv.org/abs/1611.04558)
+10. Academia, stackoverflow, google, and the internet for existing, and making it possible for a self-taught person like me to put something like this together.  
 
