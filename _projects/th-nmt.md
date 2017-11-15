@@ -5,7 +5,9 @@ date:   2017-10-20 14:00:00 +0700
 tag: AI, rnn, CNN, deep-learning, NLP, NMT
 ---
 
-This is the beta version of a blog post on NMT for Thai before I put it up on Medium. Hopefully it can provide baselines and some starting point for others who want to take a serious look into NMT for Thai. Link to [repository](https://github.com/petetanru/NMT_pytorch)
+This is the beta version of a blog post on NMT for Thai before I put it up on Medium. Hopefully it can provide baselines and some starting point for others who want to take a serious look into NMT for Thai. 
+
+**Link to [repository](https://github.com/petetanru/NMT_pytorch).**
 
 - Updated 8 Nov 2017
   - Added multilingual with google tokenizers and subword tokenizers (BPE/TCC)
