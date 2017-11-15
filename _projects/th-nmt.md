@@ -76,7 +76,7 @@ We will also initialize every sentence with a token that indicates the source la
 
 
 
-## Data
+## Training Data
 
 We will use TED Talk 2016's subtitle data set to train our data. Unlike the Thai data made available for the 2015 IWSLT evaluation campaign, our data does not come tokenized. To build up our corpus, the [WIT3]() script finds talks that exist in both languages, and finds parallel subtitle within the talk. Each 'sample segment' is a subtitle line. Sometimes it is a complete sentence and sometimes not. The script then reconstruct the segments into a sentence, based on ascii punctuations of the target language. This means you should not build sentence level parallel corpus, using the WIT3 script with languages like Thai or Chinese as the target language. Thai has no end of sentence markers, and Chinese does not use ascii punctuations. 
 
@@ -108,7 +108,15 @@ We use the [Moses](https://github.com/moses-smt/mosesdecoder/blob/master/scripts
 
 I focus on translating with Thai as the source language, rather than the target, because the current script is built for languages that does not use spaces in an ambiguous way (ie: Thai) and Thai's tokenizer is among the things we are testing. 
 
+The test scores are calculated from the valuation set, which are basically the first 10 talks from the main body of data that we take remove from the training set. 
 
+| Language Pair        | Segments | Words                   |
+| -------------------- | -------- | ----------------------- |
+| Thai - English       | 668      | 6391 (EN)<br>1409 (TH)  |
+| Thai - Vietnamese    | 2227     | 26761 (VI)<br>4862 (TH) |
+| Vietnamese - English | 927      | 8001 (EN)<br>9919 (VI)  |
+
+> TODO: test the model on actual test sets, rather than valuation sets. 
 
 ## Model and hyper parameters ##
 
