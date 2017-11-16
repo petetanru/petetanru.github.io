@@ -22,7 +22,7 @@ This is the beta version of a blog post on NMT for Thai before I put it up on Me
 
 ## Current Challenges
 
-Machine translation with Thai has historically not been good. Several of the key challenges include:
+The performance for machine translation involving Thai has not been historically great. Several of the key challenges include:
 
 1. **Word segmentation** - Thai does not use space and word segmentation is not easy. It boils down to understanding the context and ruling out words that do not make sense.
 
@@ -38,7 +38,7 @@ Machine translation with Thai has historically not been good. Several of the key
 
    i.e.: "should this connector or the next connector be the end of a sentence?"
 
-   A simple way of handling this is to treat them all as EOS, but that would obviously create several short sentences that may be is unnaturally lacking in context. The point is that no fixed rules would work here, only probabilities. Without proper editing, it is not uncommon to see run-on sentences when translating Thai writings to other languages.
+   One bad way to handle this is to treat all connector terms as EOS, but that would obviously create several short sentences that is unnaturally lacking in context. The point is that no fixed rules would work here, only comprehension of the loss and gains that result from translating a certain way. Without proper editing, it is not uncommon to see run-on sentences when translating Thai writings to other languages.
 
 3. **Lack of large parallel data** - This is probably self explanatory.. But most recently, we now have TED Talks from [WIT3!](https://wit3.fbk.eu/)
 
@@ -56,7 +56,7 @@ Namely, I will be evaluating the following ways to capture vocabs:
 
 1. **Word level** - Rakpong recently made a CNN-based tokenizer that performs quite adequately, achieving F1 of 98.1%, only a bit lower than NECTEC's private state of art tokenizer with F1 at 98.6%.
 
-2. **Character level** - Traditionally, character level RNNs for translation tasks were not very popular because the overly long sequence weould create vanishing gradients problem, and it would also make the model too computationally expensive. Recently, Lee et al. (2017) proposed a character level NMT that does address the long sequence problem by utilizing 1D CNNs to create different sized n-grams nodes, and compress the sequence with maxpool striding.
+2. **Character level** - Traditionally, character level RNNs for translation tasks were not very popular because the overly long sequence would create vanishing gradients problem, and it would also make the model too computationally expensive. Recently, Lee et al. (2017) proposed a character level NMT that does address the long sequence problem by utilizing 1D CNNs to create different sized n-grams nodes, and compress the sequence with maxpool striding.
 
 3. **Byte-Pair Encoding (BPE)** - Sennrich et al. (2016) proposed a way to represent language by breaking words down to subword units, encoding common pair of letters as a unique unit. This helps reduce the sequence length as well as the total vocabulary size. 
 
@@ -157,13 +157,14 @@ The differences are outlined in the tables below:
 
 #### GRU Decoder with attention
 
-|              | Luong's* | Lee's** | Our model |
-| ------------ | -------- | ------- | --------- |
-| RNN Cell     | LSTM     | GRU     | GRU       |
-| Embedding    | 1000     | 512     | 256       |
-| Hidden units | 1000     | 1024    | 256       |
-| Layers       | 2        | 2       | 1         |
-| Directions   | 1        | 1       | 1         |
+|                | Luong's*      | Lee's**  | Our model |
+| -------------- | ------------- | -------- | --------- |
+| RNN Cell       | LSTM          | GRU      | GRU       |
+| Embedding      | 1000          | 512      | 256       |
+| Hidden units   | 1000          | 1024     | 256       |
+| Layers         | 2             | 2        | 1         |
+| Directions     | 1             | 1        | 1         |
+| Attention type | Global, Local | Bahdanau | Global    |
 
 \* Global attention is one of Luong's implementation of attention. In his paper, he showcases a variety them, with a more sophisticated version called "local attention" achieving the best NMT performance. 
 
