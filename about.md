@@ -12,7 +12,7 @@ Fun Facts
   - If you know anyone based in Bangkok with small kids, you should check out the Sprout's [kindergarten].
   - If you're an educator, please check out
 - I invested, produced, and led the sales for a "boys love" TV series called "Love Sick" with my friends while I was a researcher. It became an [Asian phenomenon].
-- I have lived in 4 continents during my educational years. 
+- I have lived in 4 continents during my educational years.
 - I have planted over 200,000 trees in my life, all in Canada.
 
 Links

@@ -1,15 +1,13 @@
 ---
 layout: empty/homepage
+regenerate: true
 feature:
-  projects:
-    latest: 2
-    list:
-      <!-- - "/projects/polar" -->
   posts:
-    latest: 2
+    latest: 1
     list:
-      <!-- - "/2016/03/19/markdown-examples" -->
-
+  projects:
+    latest: 0
+    list:
 ---
 
 {% comment %}
