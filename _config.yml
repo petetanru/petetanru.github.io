@@ -43,7 +43,6 @@ disqus:
 timezone: Asia/Bangkok
 paginate: 10
 mathjax:  true
-markdown: kramdown
 
 # Engine Config
 # =============
