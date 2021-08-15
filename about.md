@@ -3,7 +3,7 @@ layout: empty/about
 title: Pete Peeradej Tanruangporn
 ---
 
-I turn ideas into businesses. Executive experienced in managing startups and funding for projects. Versatile professional with hands-on experience in analytics, academic research, public policy, as well as coding. I currently work as a CEO of a crypto exchange. 
+Executive experienced in managing startups and funding for projects. Versatile professional with hands-on experience in analytics, academic research, public policy, as well as coding. I turn ideas into businesses. 
 
 Fun Facts
 ----
