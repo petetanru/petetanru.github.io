@@ -86,9 +86,26 @@ sass:
 exclude:
   - README.md
   - LICENSE.txt
+  - Gemfile
+  - Gemfile.lock
+  - vendor/
+  - .bundle/
+  - .github/
 
 plugins:
   - jekyll-sitemap
   - jekyll-paginate
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Security & Performance
+# ---------------------
+include_https: true
+compress_html:
+  clippings: all
+  comments: ["<!-- ", " -->"]
+  endings: all
+  ignore:
+    envs: [development]
 
 empty_array: []
